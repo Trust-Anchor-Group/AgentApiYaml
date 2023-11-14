@@ -1,0 +1,3067 @@
+openapi: 3.0.0
+info:
+  title: Agent API
+  description: |
+    The Neuron® publishes an Agent API that can be used by agents that do not wish to, or are able
+    to, connect to the Neuron® via any of the XMPP bindings available, such as standard binary 
+    socket, websocket or Synchronous HTTP (BOSH). Via the Agent API, the agent is permitted to do 
+    basic tasks, such as send messages, create Agent IDs, and sign contracts with such Agent IDs. 
+    The Full API is
+  version: 1.0.0
+servers:
+  - url: https://{domain}/Agent
+    description: Sample Server
+    variables:
+      domain:
+        default: localhost
+        description: This variable determines the domain of the API
+  - url: https://localhost/Agent
+    description: Local Server
+paths:
+  /Account/DomainInfo:
+    get:
+      summary: Get Domain Info
+      description: |
+        Gets human-readable information
+        about the domain of the server. This resource is accessed using HTTP GET, so there is no 
+        payload sent to resource. The request can be made anonymously. No authentication is 
+        required. This resource is typically called in the beginning of an on-boarding process, 
+        where the user is given a choice to select service provider (i.e. domain).
+      operationId: getDomainInfo
+      tags:
+        - Account
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: The Accept-Language is used to select which language to use for human-readable strings returned.
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DomainInfo"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/DomainInfo"
+  /Account/Create:
+    post:
+      summary: Create Account
+      description: |
+        This endpoint is for creating a new account. A unique signature is required.
+
+        **Calculating Signature:**
+
+        Concatenate the strings userName ":" host ":" eMail ":" password ":" apiKey ":" nonce and call it s, where Host is the host/domain name of the server. It is taken from the HTTP Host request header, so it must be the same as is used in the URL of the request.
+
+        UTF-8 encode the secret corresponding to the API key, and call it Key.
+
+        UTF-8 encode the string s, and call it Data.
+
+        Calculate the HMAC-SHA256 signature using Key and Data, and call it H.
+
+        Base64-encode H. The result is the signature of the request.
+
+      operationId: createAccount
+      tags:
+        - "Account"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAccount"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CreateAccount"
+      responses:
+        "201":
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountCreated"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AccountCreated"
+  /Account/GetSessionToken:
+    post:
+      summary: Get newly created account created using a web form
+      description: Allows the client to get session information about a newly created account, created using a web form, without having to provide user credentials again.
+      operationId: getSessionToken
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetSessionToken"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetSessionToken"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionToken"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/SessionToken"
+  /Account/VerifyEMail:
+    post:
+      summary: Verify E-Mail
+      operationId: verifyEMail
+      tags:
+        - Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyEMail"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/VerifyEMail"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EMailVerified"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/EMailVerified"
+  /Account/Login:
+    post:
+      summary: Login
+      operationId: login
+      tags:
+        - Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedIn"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/LoggedIn"
+  /Account/WwwLogin:
+    post:
+      summary: Login
+      operationId: wwwLogin
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WwwLogin"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/WwwLogin"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedIn"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/LoggedIn"
+      security:
+        - WwwAuth: []
+  /Account/Refresh:
+    post:
+      summary: Refresh
+      operationId: refresh
+      tags:
+        - Account
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Refresh"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/Refresh"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedIn"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/LoggedIn"
+  /Account/Logout:
+    post:
+      summary: Logout
+      operationId: logout
+      tags:
+        - Account
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Logout"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/Logout"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Account/Recover:
+    post:
+      summary: Recover Account
+      operationId: recover
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Recover"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/Recover"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecoverResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/RecoverResponse"
+  /Xmpp/SendTextMessage:
+    post:
+      summary: Send Text Message
+      description: Allows the client to send a plain text chat message from its account to an XMPP recipient.
+      operationId: sendTextMessage
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendTextMessage"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendTextMessage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+  /Xmpp/SendFormattedMessage:
+    post:
+      summary: Send Formatted Message
+      description: Allows the client to send a formatted chat message from its account to an XMPP recipient. A formatted message contains the message in plain text, Markdown and HTML. The recipient, depending on capabilities, will select the representation it handles best to present the message.
+      operationId: sendFormattedMessage
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendFormattedMessage"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendFormattedMessage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+  /Xmpp/SendXmlMessage:
+    post:
+      summary: Send XML Message
+      description: Allows the client to send a custom XML normal message from its account to an XMPP recipient.
+      operationId: sendXmlMessage
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendXmlMessage"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendXmlMessage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+  /Xmpp/SendPresenceSubscription:
+    post:
+      summary: Send Presence Subscription
+      description: Allows the client to send a presence subscription stanza from its account to an XMPP recipient.
+      operationId: sendPresenceSubscription
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendPresenceSubscription"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendPresenceSubscription"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PresenceSubscriptionResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PresenceSubscriptionResult"
+  /Xmpp/SendPresenceUnsubscription:
+    post:
+      summary: Send Presence Unsubscription
+      description: Allows the client to send a presence unsubscription stanza from its account to an XMPP recipient.
+      operationId: sendPresenceUnsubscription
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendPresenceUnsubscription"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendPresenceUnsubscription"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+  /Xmpp/SendSubscriptionAccepted:
+    post:
+      summary: Send Subscription Accepted
+      description: Allows the client to accept a presence subscription made to its account.
+      operationId: sendSubscriptionAccepted
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendSubscriptionAccepted"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendSubscriptionAccepted"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionAcceptedResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/SubscriptionAcceptedResult"
+  /Xmpp/SendSubscriptionDeclined:
+    post:
+      summary: Send Subscription Declined
+      description: Allows the client to decline a presence subscription made to its account.
+      operationId: sendSubscriptionDeclined
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendSubscriptionDeclined"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SendSubscriptionDeclined"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/StanzaResult"
+  /Xmpp/GetRoster:
+    post:
+      summary: Get Roster
+      description: Allows the client to get the roster of its account.
+      operationId: getRoster
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetRoster"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetRoster"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Roster"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Roster"
+  /Xmpp/GetRosterItem:
+    post:
+      summary: Get Roster Item
+      description: Allows the client to get a specific roster item of its account.
+      operationId: getRosterItem
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetRosterItem"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetRosterItem"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RosterItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/RosterItem"
+  /Xmpp/SetRosterItem:
+    post:
+      summary: Set Roster Item
+      description: Sets information about a specific roster item for the account.
+      operationId: setRosterItem
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetRosterItem"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SetRosterItem"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RosterItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/RosterItem"
+  /Xmpp/RemoveRosterItem:
+    post:
+      summary: Remove Roster Item
+      description: Removes a specific roster item from the account.
+      operationId: removeRosterItem
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RemoveRosterItem"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/RemoveRosterItem"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RosterItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/RosterItem"
+  /Xmpp/PresenceProbe:
+    post:
+      summary: Presence Probe
+      description: Gets the latest presence issued by a contact in your roster who has approved your presence subscription request.
+      operationId: presenceProbe
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresenceProbe"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PresenceProbe"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProbeResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProbeResult"
+  /Xmpp/InformationQuery:
+    post:
+      summary: Information Query
+      description: Sends an Information Query (iq) to an entity on the XMPP network, given its Full JID. For connected entities, you need to have an presence subscription to that entity, approved by the entity, to get the Full JID. You get the Full JID using the Presence Probe resource.
+      operationId: informationQuery
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InformationQuery"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/InformationQuery"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResultJson"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/QueryResultXml"
+  /Xmpp/PopMessages:
+    post:
+      summary: Pop Messages
+      operationId: popMessages
+      tags:
+        - XMPP
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PopMessages"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PopMessages"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/MessageResult"
+  /Storage/SavePrivateXml:
+    post:
+      summary: Save Private XML
+      description: Saves private XML data to the server.
+      operationId: savePrivateXml
+      tags:
+        - Storage
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SavePrivateXml"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SavePrivateXml"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stored"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Stored"
+  /Storage/LoadPrivateXml:
+    post:
+      summary: Load Private XML
+      description: Loads private XML data from the server.
+      operationId: loadPrivateXml
+      tags:
+        - Storage
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadPrivateXml"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/LoadPrivateXml"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateXml"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PrivateXml"
+  /Storage/Content:
+    post:
+      summary: Upload new content using form data
+      operationId: postContent
+      tags:
+        - Storage
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                Content:
+                  type: string
+                  format: binary
+                ContentId:
+                  type: string
+                Visibility:
+                  type: string
+                  enum: [Public, Presence, Private]
+      responses:
+        "200":
+          description: Content successfully uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentResponse"
+  /Storage/Content/{username}/{contentId}:
+    put:
+      summary: Upload new content with Content ID
+      operationId: putContent
+      tags:
+        - Storage
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+          description: Username of the agent uploading the content
+        - in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+            pattern: '^.+\..+$'
+          description: Content ID with file extension matching the Content-Type
+        - in: header
+          name: X-Visibility
+          schema:
+            type: string
+            enum: [Public, Presence, Private]
+          required: true
+          description: Controls the visibility of the uploaded content
+      requestBody:
+        required: true
+        content:
+          "*/*":
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Content successfully uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ContentResponse"
+  /Storage/Content/{path}:
+    delete:
+      summary: Deletes content from path
+      operationId: deleteContent
+      tags:
+        - Storage
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: path
+          required: true
+          schema:
+            type: string
+          description: The path to the uploaded content
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: Get content from path
+      operationId: getContent
+      tags:
+        - Storage
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: path
+          required: true
+          schema:
+            type: string
+          description: The path to the uploaded content
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ContentResponse"
+  /Crypto/GetAlgorithms:
+    post:
+      summary: Get Algorithms
+      description: Gets a list of algorithms supported by the server.
+      operationId: getAlgorithms
+      tags:
+        - Crypto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetAlgorithms"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetAlgorithms"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlgorithmsResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AlgorithmsResult"
+  /Crypto/CreateKey:
+    post:
+      summary: Create Key
+      description: >
+        Allows the client to create a cryptographic key on the server, and protect it with a password. The key will be stored encrypted on the server, protected with the key password. The creation of a key will require the user to provide the account password again.
+      operationId: createKey
+      tags:
+        - Crypto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateKey"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CreateKey"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stored"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Stored"
+  /Crypto/GetPublicKey:
+    post:
+      summary: Get Public Key
+      description: Gets the public key of a key pair.
+      operationId: getPublicKey
+      tags:
+        - Crypto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetPublicKey"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetPublicKey"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicKey"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PublicKey"
+  /Legal/ValidatePNr:
+    post:
+      summary: Validate Personal Number
+      description: Allows the client to validate a personal number before using it to apply for a Legal Identity.
+      operationId: validatePNr
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidatePNr"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ValidatePNr"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidatePNrResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ValidatePNrResponse"
+  /Legal/GetApplicationAttributes:
+    post:
+      summary: Get Application Attributes
+      description: Allows the client to get the attributes of a legal identity application.
+      operationId: getApplicationAttributes
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetApplicationAttributes"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetApplicationAttributes"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicationAttributes"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApplicationAttributes"
+  /Legal/GetIdentity:
+    post:
+      summary: Get Legal Identity (NOT IMPLEMENTED)
+      description: Allows the client to get an Identity. If the Identity belongs to someone else, and the client is not authorized access to the Identity, an error will be returned.
+      operationId: getIdentity
+      tags:
+        - Unavailable
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetIdentity"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetIdentity"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentityResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/IdentityResponse"
+  /Legal/AddIdAttachment:
+    post:
+      summary: Add attachment to legal id application (NOT IMPLEMENTED)
+      description: Allows the client to add an attachment to a Legal Identity application.
+      operationId: addIdAttachment
+      tags:
+        - Unavailable
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetIdentity"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetIdentity"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentityResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/IdentityResponse"
+  /Legal/ReadyForApproval:
+    post:
+      summary: Ready for Approval
+      description: |
+        When an ID application is ready (all attachments have been signed and uploaded), 
+        the client can call this resource to flag the application as ready for approval. 
+
+        This will execute any automated onboarding procedures to analyze the application, and, if passing them, will take the identity to the approved state. 
+        They can also take the application to the rejected state, in case they find the information invalid.
+      operationId: readyForApproval
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReadyForApproval"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ReadyForApproval"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Legal/GetServiceProviderForIdReview:
+    post:
+      summary: Get Service Provider for ID Review
+      description: Allows the client to retrieve a list of available service providers that can be used to review a recent ID application.
+      operationId: getServiceProviderForIdReview
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetServiceProvidersForIdReview"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetServiceProvidersForIdReview"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvidersResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProvidersResponse"
+  /Legal/SelectReviewService:
+    post:
+      summary: Select Review Service
+      description: Allows the client to select an internal peer review service, for reviewing a recent identity application.
+      operationId: selectReviewService
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SelectReviewService"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SelectReviewService"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Legal/AuthorizeAccessToId:
+    post:
+      summary: Authorize Access to ID
+      description: Allows the client to (pre-)authorize access to (or remove authorization to access) one of its Legal Identities to a remote party. When (if) the remote party requests the ID, the broker will return it automatically, if already authorized. If not authorized, a petition to access the identity will be sent to the client for manual approval (or rejection).
+      operationId: authorizeAccessToId
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthorizeAccessToId"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AuthorizeAccessToId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Legal/PetitionPeerReview:
+    post:
+      summary: Petition Peer Review
+      description: Allows the client to petition a peer review service to review a recent identity application.
+      operationId: petitionPeerReview
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetitionPeerReview"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PetitionPeerReview"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Legal/PetitionId:
+    post:
+      summary: Petition ID
+      description: Allows the client to petition the owner of a Legal Identity, for information about the identity.
+      operationId: petitionId
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetitionId"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PetitionId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Legal/PetitionSignature:
+    post:
+      summary: Petition Signature
+      description: Allows the client to petition the owner of a Legal Identity for a digital signature on some digital content.
+      operationId: petitionSignature
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetitionSignature"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PetitionSignature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Legal/CreateContract:
+    post:
+      summary: Create Contract
+      description: Allows the client to create a new smart contract, based on an existing (and approved) contract template. The request must be signed using one of the keys created by the client.
+      operationId: createContract
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateContract"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CreateContract"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ContractResponse"
+  /Legal/GetContract:
+    post:
+      summary: Get Contract
+      description: Allows the client to get a Smart Contract. If the Contract belongs to someone else, and the client is not authorized access to the Contract, an error will be returned.
+      operationId: getContract
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetContract"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetContract"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ContractResponse"
+  /Legal/SignContract:
+    post:
+      summary: Sign Contract
+      description: Allows the client to sign a Smart Contract. The request must be signed using one of the keys created by the client.
+      operationId: signContract
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignContract"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SignContract"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ContractResponse"
+  /Legal/SignData:
+    post:
+      summary: Sign Data
+      description: Allows the client to sign binary data.
+      operationId: signData
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignData"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/SignData"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignatureResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/SignatureResponse"
+components:
+  securitySchemes:
+    WwwAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    DomainInfo:
+      type: object
+      required:
+        - useEncryption
+      properties:
+        domain:
+          type: string
+          description: The domain of the server
+          xml:
+            attribute: true
+        useEncryption:
+          type: boolean
+          description: Indicates whether the server requires encryption
+          xml:
+            attribute: true
+        humanReadableName:
+          type: string
+          description: Human-readable name of the server
+          xml:
+            attribute: true
+        humanReadableNameDescription:
+          type: string
+          description: Human-readable description of the server
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    CreateAccount:
+      type: object
+      required:
+        - userName
+        - eMail
+        - password
+        - apiKey
+        - nonce
+        - signature
+        - seconds
+      properties:
+        userName:
+          type: string
+          description: The user's name.
+          xml:
+            attribute: true
+        eMail:
+          type: string
+          format: email
+          description: The user's email address.
+          xml:
+            attribute: true
+        password:
+          type: string
+          format: password
+          description: The user's password.
+          xml:
+            attribute: true
+        apiKey:
+          type: string
+          description: The API key used for identification.
+          xml:
+            attribute: true
+        nonce:
+          type: string
+          description: A unique nonce for this request.
+          xml:
+            attribute: true
+        signature:
+          type: string
+          description: >
+            The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
+
+          xml:
+            attribute: true
+        seconds:
+          type: integer
+          description: The number of seconds until the request expires.
+          minimum: 0
+          maximum: 3600
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AccountCreated:
+      type: object
+      required:
+        - created
+        - enabled
+        - canRelay
+        - jwt
+        - expires
+      properties:
+        created:
+          type: string
+          format: date-time
+          description: The timestamp when the account was created.
+          xml:
+            attribute: true
+        enabled:
+          type: boolean
+          description: Whether the account is enabled.
+          xml:
+            attribute: true
+        canRelay:
+          type: boolean
+          description: Whether the account can relay e-mails.
+          xml:
+            attribute: true
+        jwt:
+          type: string
+          description: The JSON Web Token for authentication.
+          xml:
+            attribute: true
+        expires:
+          type: string
+          format: date-time
+          description: The timestamp when the jwt token expires.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetSessionToken:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SessionToken:
+      type: object
+      properties:
+        AccountCreated:
+          $ref: "#/components/schemas/AccountCreated"
+        seconds:
+          type: integer
+          description: The number of seconds until the JWT expires.
+          minimum: 0
+          maximum: 3600
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    VerifyEMail:
+      type: object
+      required:
+        - eMail
+        - code
+      properties:
+        eMail:
+          type: string
+          format: email
+          description: The e-mail address to verify.
+          xml:
+            attribute: true
+        code:
+          type: string
+          description: The verification code.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    EMailVerified:
+      type: object
+      required:
+        - eMail
+        - userName
+      properties:
+        eMail:
+          type: string
+          format: email
+          description: The e-mail address that was verified.
+          xml:
+            attribute: true
+        userName:
+          type: string
+          description: The user name of the account.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Login:
+      type: object
+      required:
+        - userName
+        - nonce
+        - signature
+        - seconds
+      properties:
+        userName:
+          type: string
+          description: The user name of the account.
+          xml:
+            attribute: true
+        nonce:
+          type: string
+          description: A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.
+          xml:
+            attribute: true
+        signature:
+          type: string
+          description: >
+            The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
+
+          xml:
+            attribute: true
+        seconds:
+          type: integer
+          description: The number of seconds until the request expires.
+          minimum: 0
+          maximum: 3600
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    LoggedIn:
+      type: object
+      required:
+        - jwt
+        - expires
+      properties:
+        jwt:
+          type: string
+          description: The JSON Web Token for authentication.
+          xml:
+            attribute: true
+        expires:
+          type: string
+          format: date-time
+          description: The timestamp when the jwt token expires.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    WwwLogin:
+      type: object
+      required:
+        - seconds
+      properties:
+        seconds:
+          type: integer
+          description: The number of seconds until the request expires.
+          minimum: 0
+          maximum: 3600
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Refresh:
+      type: object
+      required:
+        - seconds
+      properties:
+        seconds:
+          type: integer
+          description: The number of seconds until the request expires.
+          minimum: 0
+          maximum: 3600
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Logout:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AckResponse:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Recover:
+      type: object
+      properties:
+        userName:
+          type: string
+          description: The user name of the account.
+          xml:
+            attribute: true
+        eMail:
+          type: string
+          format: email
+          description: The e-mail address of the account.
+          xml:
+            attribute: true
+        country:
+          type: string
+          description: The country of the account.
+          xml:
+            attribute: true
+        phoneNr:
+          type: string
+          description: The phone number of the account.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    RecoverResponse:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SendTextMessage:
+      type: object
+      required:
+        - to
+        - message
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        message:
+          type: string
+          description: The plain text message to send.
+          xml:
+            attribute: true
+        subject:
+          type: string
+          description: Optional subject of message.
+          xml:
+            attribute: true
+        language:
+          type: string
+          description: Optional ISO 639-1 language code.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SendFormattedMessage:
+      type: object
+      required:
+        - to
+        - message
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        message:
+          type: string
+          description: The plain text message to send.
+          xml:
+            attribute: true
+        subject:
+          type: string
+          description: Optional subject of message.
+          xml:
+            attribute: true
+        language:
+          type: string
+          description: Optional ISO 639-1 language code.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    StanzaResult:
+      type: object
+      required:
+        - sent
+        - id
+      properties:
+        sent:
+          type: boolean
+          description: Whether the XMPP stanza was sent or not.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: ID of stanza sent. Can be used to update message. If no ID was provided in the call, a message ID will be generated.
+
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SendPresenceSubscription:
+      type: object
+      required:
+        - to
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        customXml:
+          type: string
+          description: Optional Custom XML that can be added to the presence subscription request.
+          example: ""
+          xml:
+            name: "[Custom XML Goes Here]"
+        language:
+          type: string
+          description: Optional ISO 639-1 language code.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PresenceSubscriptionResult:
+      type: object
+      required:
+        - sent
+        - id
+      properties:
+        sent:
+          type: boolean
+          description: Whether the XMPP stanza was sent or not.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: ID of stanza sent. Can be used to update message. If no ID was provided in the call, a message ID will be generated.
+          xml:
+            attribute: true
+        RosterItem:
+          $ref: "#/components/schemas/RosterItem"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Groups:
+      type: array
+      description: The groups that the roster item belongs to.
+      items:
+        type: string
+        nullable: true
+        xml:
+          name: Item
+      xml:
+        name: Groups
+        wrapped: true
+    RosterItem:
+      type: object
+      required:
+        - bareJid
+        - pendingSubscription
+        - status
+        - name
+        - Groups
+      properties:
+        bareJid:
+          type: string
+          description: The bare Jabber ID of the roster item.
+          xml:
+            attribute: true
+        pendingSubscription:
+          type: boolean
+          description: Indicates if there is a pending subscription.
+          xml:
+            attribute: true
+        status:
+          type: string
+          description: The status of the roster item.
+          xml:
+            attribute: true
+        name:
+          type: string
+          description: The name of the roster item.
+          xml:
+            attribute: true
+        Groups:
+          $ref: "#/components/schemas/Groups"
+      xml:
+        name: RosterItem
+    SendXmlMessage:
+      type: object
+      required:
+        - to
+        - Xml
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        subject:
+          type: string
+          description: Optional subject of message.
+          xml:
+            attribute: true
+        language:
+          type: string
+          description: Optional ISO 639-1 language code.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+        Xml:
+          type: string
+          description: The XML to send.
+          xml:
+            name: Xml
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SendPresenceUnsubscription:
+      type: object
+      required:
+        - to
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SendSubscriptionAccepted:
+      type: object
+      required:
+        - to
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SubscriptionAcceptedResult:
+      type: object
+      required:
+        - sent
+        - id
+        - RosterItem
+      properties:
+        sent:
+          type: boolean
+          description: Whether the XMPP stanza was sent or not.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: ID of stanza sent. Can be used to update message. If no ID was provided in the call, a message ID will be generated.
+          xml:
+            attribute: true
+        RosterItem:
+          $ref: "#/components/schemas/RosterItem"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SendSubscriptionDeclined:
+      type: object
+      required:
+        - to
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: Optional Message ID.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetRoster:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: Offset into the roster where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of roster items to return.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Roster:
+      type: object
+      properties:
+        RosterItems:
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/RosterItem"
+            xml:
+              name: Item
+          xml:
+            name: RosterItems
+            wrapped: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+        name: Roster
+    GetRosterItem:
+      type: object
+      required:
+        - bareJid
+      properties:
+        bareJid:
+          type: string
+          description: Bare JID of roster item.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SetRosterItem:
+      type: object
+      required:
+        - bareJid
+        - name
+        - Groups
+      properties:
+        bareJid:
+          type: string
+          description: Bare JID of roster item.
+          xml:
+            attribute: true
+        name:
+          type: string
+          description: Name of roster item.
+          xml:
+            attribute: true
+        Groups:
+          $ref: "#/components/schemas/Groups"
+    RemoveRosterItem:
+      type: object
+      required:
+        - bareJid
+      properties:
+        bareJid:
+          type: string
+          description: Bare JID of roster item.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PresenceProbe:
+      type: object
+      required:
+        - to
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ProbeResult:
+      type: object
+      required:
+        - jid
+        - type
+        - recieved
+        - Stanza
+      properties:
+        jid:
+          type: string
+          description: Bare JID of contact to whom the presence probe is directed.
+          xml:
+            attribute: true
+        type:
+          type: string
+          description: Type of presence sent. Can be the empty string (meaning available) or unavailable.
+          xml:
+            attribute: true
+        recieved:
+          type: string
+          format: date-time
+          description: When presence was received by the server of the contact.
+          xml:
+            attribute: true
+        Stanza:
+          type: string
+          description: The XML stanza that was sent.
+          xml:
+            name: Stanza
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    InformationQuery:
+      type: object
+      required:
+        - to
+        - type
+        - xml
+      properties:
+        to:
+          type: string
+          description: A Bare or Full JID (XMPP network address).
+          xml:
+            attribute: true
+        type:
+          type: string
+          description: Type of information query.
+          xml:
+            attribute: true
+        xml:
+          type: string
+          description: The XML stanza that was sent.
+          example: ""
+          xml:
+            wrapped: false
+            name: "[Custom Xml]"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    QueryResultJson:
+      type: object
+      required:
+        - ok
+      properties:
+        ok:
+          type: boolean
+          description: Whether the query was successful or not.
+        errorCode:
+          type: integer
+          description: If the query was not successful, this is the error code.
+        errorText:
+          type: string
+          description: If the query was not successful, this is the error text.
+        errorType:
+          type: string
+          description: If the query was not successful, this is the error type.
+        ErrorElement:
+          type: string
+          description: If the query was not successful, this is the error element.
+        Stanza:
+          type: string
+          description: The XML stanza that was sent.
+    QueryResultXml:
+      type: object
+      required:
+        - ok
+      properties:
+        ok:
+          type: boolean
+          description: Whether the query was successful or not.
+          xml:
+            attribute: true
+        errorCode:
+          type: integer
+          description: If the query was not successful, this is the error code.
+          xml:
+            attribute: true
+        errorText:
+          type: string
+          description: If the query was not successful, this is the error text.
+          xml:
+            attribute: true
+        errorType:
+          type: string
+          description: If the query was not successful, this is the error type.
+          xml:
+            attribute: true
+        content:
+          type: string
+          description: Any XML content returned in the query result.
+          example: ""
+          xml:
+            wrapped: false
+            name: "[Custom Xml]"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PopMessages:
+      type: object
+      required:
+        - maxCount
+      properties:
+        maxCount:
+          type: integer
+          description: Maximum number of messages to return.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Message:
+      type: object
+      required:
+        - from
+        - to
+        - type
+        - timestamp
+        - content
+      properties:
+        id:
+          type: string
+          description: The ID of the message.
+          xml:
+            attribute: true
+        from:
+          type: string
+          description: The Bare JID of the sender.
+          xml:
+            attribute: true
+        to:
+          type: string
+          description: The Bare JID of the recipient.
+          xml:
+            attribute: true
+        type:
+          type: string
+          description: The type of message.
+          xml:
+            attribute: true
+        timestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the message.
+          xml:
+            attribute: true
+        content:
+          type: string
+          description: The content of the message.
+          example: ""
+          xml:
+            wrapped: false
+            name: "[Custom Xml]"
+      xml:
+        wrapped: false
+    MessageResult:
+      type: object
+      required:
+        - messages
+      properties:
+        messages:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/Message"
+          xml:
+            name: Message
+    SavePrivateXml:
+      type: object
+      required:
+        - xml
+      properties:
+        xml:
+          type: string
+          description: The XML to save.
+          example: ""
+          xml:
+            name: "[Custom Xml]"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Stored:
+      type: object
+      required:
+        - created
+        - updated
+      properties:
+        created:
+          type: string
+          format: date-time
+          description: When the information record was first created.
+          xml:
+            attribute: true
+        updated:
+          type: string
+          format: date-time
+          description: When the information record was last updated.
+          xml:
+            attribute: true
+    LoadPrivateXml:
+      type: object
+      required:
+        - localName
+        - namespace
+      properties:
+        localName:
+          type: string
+          description: The local name of the XML element.
+          xml:
+            attribute: true
+        namespace:
+          type: string
+          description: The namespace of the XML element.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PrivateXml:
+      type: object
+      required:
+        - created
+        - updated
+        - xml
+      properties:
+        created:
+          type: string
+          format: date-time
+          description: When the information record was first created.
+          xml:
+            attribute: true
+        updated:
+          type: string
+          format: date-time
+          description: When the information record was last updated.
+          xml:
+            attribute: true
+        xml:
+          type: string
+          description: The XML to save.
+          example: ""
+          xml:
+            wrapped: false
+            name: "[Custom Xml]"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Visibility:
+      type: string
+      enum:
+        - Public
+        - Presence
+        - Private
+      xml:
+        attribute: true
+    ContentResponse:
+      type: object
+      required:
+        - uploaded
+        - visibility
+        - etag
+        - url
+      properties:
+        uploaded:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+        visibility:
+          $ref: "#/components/schemas/Visibility"
+        etag:
+          type: string
+          xml:
+            attribute: true
+        url:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Algorithm:
+      type: object
+      required:
+        - localName
+        - namespace
+        - secuirtyStrength
+        - safe
+        - slow
+        - score
+      properties:
+        localName:
+          type: string
+          description: The local name of the algorithm.
+          xml:
+            attribute: true
+        namespace:
+          type: string
+          description: The namespace of the algorithm.
+          xml:
+            attribute: true
+        secuirtyStrength:
+          type: integer
+          description: The security strength of the algorithm.
+          xml:
+            attribute: true
+        safe:
+          type: boolean
+          description: Whether the algorithm is considered safe or not.
+          xml:
+            attribute: true
+        slow:
+          type: boolean
+          description: Whether the algorithm is considered slow or not.
+          xml:
+            attribute: true
+        score:
+          type: integer
+          description: The score of the algorithm.
+          xml:
+            attribute: true
+      xml:
+        name: Algorithm
+        wrapped: true
+    Algorithms:
+      type: array
+      nullable: true
+      items:
+        $ref: "#/components/schemas/Algorithm"
+      xml:
+        name: Algorithms
+        wrapped: true
+    GetAlgorithms:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AlgorithmsResult:
+      type: object
+      required:
+        - algorithms
+      properties:
+        algorithms:
+          $ref: "#/components/schemas/Algorithms"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    CreateKey:
+      type: object
+      required:
+        - localName
+        - namespace
+        - id
+        - nonce
+        - keySignature
+        - requestSignature
+      properties:
+        localName:
+          type: string
+          description: The local name of the key.
+          xml:
+            attribute: true
+        namespace:
+          type: string
+          description: The namespace of the key.
+          xml:
+            attribute: true
+        id:
+          type: string
+          description: The ID of the key.
+          xml:
+            attribute: true
+        nonce:
+          type: string
+          description: A unique nonce for this request.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
+          xml:
+            attribute: true
+    GetPublicKey:
+      type: object
+      properties:
+        keyId:
+          type: string
+          description: Optional Key ID. If not provided, the server public key is returned. If provided, the public key of the corresponding cryptographic key of the client is returned.
+          xml:
+            attribute: true
+    PublicKey:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          description: Base64-encoded public key of the server.
+          xml:
+            attribute: true
+        Algorithm:
+          $ref: "#/components/schemas/Algorithm"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ValidatePNr:
+      type: object
+      required:
+        - countryCode
+        - pnr
+      properties:
+        countryCode:
+          type: string
+          description: ISO 3166-1 country code.
+          xml:
+            attribute: true
+        pnr:
+          type: string
+          description: Personal number entry to validate.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ValidatePNrResponse:
+      type: object
+      required:
+        - countrySupported
+      properties:
+        countrySupported:
+          type: boolean
+          description: If country is supported and recognized by the personal number validator on the broker.
+          xml:
+            attribute: true
+        isValid:
+          type: boolean
+          description: If the personal number is valid.
+          xml:
+            attribute: true
+        normalized:
+          type: string
+          description: The normalized personal number.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetApplicationAttributes:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ApplicationAttributes:
+      type: object
+      required:
+        - peerReview
+      properties:
+        peerReview:
+          type: boolean
+          description: If peer review is required.
+          xml:
+            attribute: true
+        nrReviewers:
+          type: integer
+          description: Number of successfuls peer reviews required for a process to conclude successfully.
+          nullable: true
+          xml:
+            attribute: true
+        nrPhotos:
+          type: integer
+          description: Number of photos required in an application, for a peer-review process.
+          nullable: true
+          xml:
+            attribute: true
+        iso3166:
+          type: boolean
+          description: If ISO 3166 country codes are required to be used.
+          nullable: true
+          xml:
+            attribute: true
+        Required:
+          type: array
+          items:
+            type: string
+            xml:
+              name: Item
+          xml:
+            name: Required
+            wrapped: true
+    GetIdentity:
+      type: object
+      required:
+        - legalId
+      properties:
+        legalId:
+          type: string
+          description: Identity of the Legal Identity to get.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    IdentityResponse:
+      type: object
+      required:
+        - Identity
+      properties:
+        Identity:
+          type: object
+          example: "NOT IMPLEMENTED YET"
+          xml:
+            name: Identity
+            wrapped: false
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AddIdAttachment:
+      type: object
+      required:
+        - keyId
+        - legalId
+        - nonce
+        - keySignature
+        - requestSignature
+        - attachmentBase64
+        - attachmentFileName
+        - attachmentContentType
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the Identity application.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identity of the Legal Identity Application.
+          xml:
+            attribute: true
+        nonce:
+          type: string
+          description: A unique random string, at least 32 characters long, with sufficient entropy to not be reused again. If reused, an error will be returned.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+        attachmentBase64:
+          type: string
+          description: Base-64-encoding of attachment to add to the Identity application.
+          xml:
+            attribute: true
+        attachmentFileName:
+          type: string
+          description: File name of attachment.
+          xml:
+            attribute: true
+        attachmentContentType:
+          type: string
+          description: Content type of attachment.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ReadyForApproval:
+      type: object
+      required:
+        - legalId
+      properties:
+        legalId:
+          type: string
+          description: Identity of the Legal Identity Application.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetServiceProvidersForIdReview:
+      type: object
+      required:
+        - legalId
+      properties:
+        legalId:
+          type: string
+          description: Identity of the Legal Identity Application.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Provider:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - reviewerId
+        - external
+      properties:
+        id:
+          type: string
+          description: Identity of the provider.
+          xml:
+            attribute: true
+        type:
+          type: string
+          description: Type of provider.
+          xml:
+            attribute: true
+        name:
+          type: string
+          description: Name of provider.
+          xml:
+            attribute: true
+        reviewerId:
+          type: string
+          description: Identity of reviewer.
+          xml:
+            attribute: true
+        external:
+          type: boolean
+          description: If provider is external.
+          xml:
+            attribute: true
+        iconUrl:
+          type: string
+          description: URL of icon.
+          nullable: true
+          xml:
+            attribute: true
+        iconWidth:
+          type: integer
+          description: Width of icon.
+          nullable: true
+          xml:
+            attribute: true
+        iconHeight:
+          type: integer
+          description: Height of icon.
+          nullable: true
+          xml:
+            attribute: true
+      xml:
+        name: Provider
+        wrapped: true
+    ProvidersResponse:
+      type: object
+      required:
+        - Providers
+      properties:
+        Providers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Provider"
+          xml:
+            name: Providers
+            wrapped: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SelectReviewService:
+      type: object
+      required:
+        - serviceId
+        - serviceProvider
+      properties:
+        serviceId:
+          type: string
+          description: ID of internal peer review service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AuthorizeAccessToId:
+      type: object
+      required:
+        - legalId
+        - remoteId
+        - authorized
+      properties:
+        legalId:
+          type: string
+          description: Identifier of the corresponding Legal Identity of the client.
+          xml:
+            attribute: true
+        remoteId:
+          type: string
+          description: Identifier of the Legal Identity of the corresponding remote entity.
+          xml:
+            attribute: true
+        authorized:
+          type: boolean
+          description: If the remote entity is authorized access to the corresponding identity or not.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PetitionPeerReview:
+      type: object
+      required:
+        - keyId
+        - legalId
+        - remoteId
+        - petitionId
+        - purpose
+        - keySignature
+        - requestSignature
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the petition. It must correspond to the key used when signing the Legal Identity application that will be used to sign the petition.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identifier of the Legal Identity that will be used to sign the petition, and that will be reviewed by the peer.
+          xml:
+            attribute: true
+        remoteId:
+          type: string
+          description: Identifier of the remote legal identity the client requests review the identity application.
+          xml:
+            attribute: true
+        petitionId:
+          type: string
+          description: An identifier of the request, the client can use to correlate asynchronous responses with the corresponding petition request.
+          xml:
+            attribute: true
+        purpose:
+          type: string
+          description: A human readable text that will be presented to the remote user, describing the purpose of the petition.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PetitionId:
+      type: object
+      required:
+        - keyId
+        - legalId
+        - remoteId
+        - petitionId
+        - purpose
+        - keySignature
+        - requestSignature
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the petition. It must correspond to the key used when signing the Legal Identity application that will be used to sign the petition.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identifier of the Legal Identity that will be used to sign the petition.
+          xml:
+            attribute: true
+        remoteId:
+          type: string
+          description: Identifier of the remote legal identity the client requests access to.
+          xml:
+            attribute: true
+        petitionId:
+          type: string
+          description: An identifier of the request, the client can use to correlate asynchronous responses with the corresponding petition request.
+          xml:
+            attribute: true
+        purpose:
+          type: string
+          description: A human readable text that will be presented to the remote user, describing the purpose of the petition.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    PetitionSignature:
+      type: object
+      required:
+        - keyId
+        - legalId
+        - remoteId
+        - contentBase64
+        - petitionId
+        - purpose
+        - keySignature
+        - requestSignature
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the petition. It must correspond to the key used when signing the Legal Identity application that will be used to sign the petition.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identifier of the Legal Identity that will be used to sign the petition.
+          xml:
+            attribute: true
+        remoteId:
+          type: string
+          description: Identifier of the remote legal identity the client requests access to.
+          xml:
+            attribute: true
+        contentBase64:
+          type: string
+          description: Base64-encoded binary content requested to be signed by the remote legal identity.
+          xml:
+            attribute: true
+        petitionId:
+          type: string
+          description: An identifier of the request, the client can use to correlate asynchronous responses with the corresponding petition request.
+          xml:
+            attribute: true
+        purpose:
+          type: string
+          description: A human readable text that will be presented to the remote user, describing the purpose of the petition.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Part:
+      type: object
+      required:
+        - role
+        - legalId
+      properties:
+        role:
+          type: string
+          description: Role of a predefined part to the contract.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identity of part.
+          xml:
+            attribute: true
+      xml:
+        name: Part
+    Parts:
+      type: array
+      nullable: true
+      items:
+        $ref: "#/components/schemas/Part"
+      xml:
+        name: Parts
+        wrapped: true
+    Parameter:
+      type: object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+          description: Name of parameter.
+          xml:
+            attribute: true
+        value:
+          type: string
+          description: Value of parameter.
+          xml:
+            attribute: true
+      xml:
+        name: Parameter
+    Parameters:
+      type: array
+      nullable: true
+      items:
+        $ref: "#/components/schemas/Parameter"
+      xml:
+        name: Parameters
+        wrapped: true
+    CreateContract:
+      type: object
+      required:
+        - templateId
+        - visibility
+      properties:
+        templateId:
+          type: string
+          description: Identity of template to use.
+          xml:
+            attribute: true
+        visibility:
+          type: string
+          description: Visibility of contract.
+          enum:
+            - Public
+            - PublicSearchable
+            - CreatorAndParts
+            - DomainAndParts
+          xml:
+            attribute: true
+        Parts:
+          $ref: "#/components/schemas/Parts"
+        Parameters:
+          $ref: "#/components/schemas/Parameters"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ContractResponse:
+      type: object
+      required:
+        - Contract
+      properties:
+        Contract:
+          type: object
+          description: The contract object
+          additionalProperties: true
+          xml:
+            attribute: false
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetContract:
+      type: object
+      required:
+        - contractId
+      properties:
+        contractId:
+          type: string
+          description: Identity of contract to get.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SignContract:
+      type: object
+      required:
+        - keyId
+        - legalId
+        - contractId
+        - role
+        - nonce
+        - keySignature
+        - requestSignature
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the contract.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identity of the Legal Identity that will be used to sign the contract.
+          xml:
+            attribute: true
+        contractId:
+          type: string
+          description: Identity of contract to sign.
+          xml:
+            attribute: true
+        role:
+          type: string
+          description: Role of a predefined part to the contract.
+          xml:
+            attribute: true
+        nonce:
+          type: string
+          description: A unique random string, at least 32 characters long, with sufficient entropy to not be reused again. If reused, an error will be returned.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SignData:
+      type: object
+      required:
+        - keyId
+        - legalId
+        - dataBase64
+        - keySignature
+        - requestSignature
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the data.
+          xml:
+            attribute: true
+        legalId:
+          type: string
+          description: Identity of the Legal Identity that will be used to sign the data.
+          xml:
+            attribute: true
+        dataBase64:
+          type: string
+          description: Base64-encoded binary data to sign.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    SignatureResponse:
+      type: object
+      required:
+        - Signature
+      properties:
+        Signature:
+          type: string
+          description: Base64-encoded signature.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
