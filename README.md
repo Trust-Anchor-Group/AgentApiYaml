@@ -50,7 +50,7 @@ The specification can be used for testing and with tools such as SwaggerUI and S
 | `/Crypto/GetPublicKey`                       | ✅             |
 | `/Legal/ValidatePNr`                         | ✅             |
 | `/Legal/GetApplicationAttributes`            | ✅             |
-| `/Legal/GetIdentity`                         | ✅             |
+| `/Legal/GetIdentity`                         | ⚠️             |
 | `/Legal/AddIdAttachment`                     | ✅             |
 | `/Legal/ReadyForApproval`                    | ✅             |
 | `/Legal/GetServiceProviderForIdReview`       | ✅             |
