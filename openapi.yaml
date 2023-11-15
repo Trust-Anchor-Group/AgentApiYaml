@@ -1316,6 +1316,521 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SignatureResponse"
+  /Legal/GetCreatedContracts:
+    post:
+      summary: Get Created Contracts
+      description: Allows the client to get a list of all Smart Contracts created by the client.
+      operationId: getCreatedContracts
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetCreatedContracts"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetCreatedContracts"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractsResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ContractsResponse"
+  /Legal/AuthorizeAccessToContract:
+    post:
+      summary: Authorize Access to ID
+      description: |
+        Allows the client to (pre-)authorize access to (or remove authorization to access) one of its Smart Contracts (or one of the Smart Contracts for which the client is part) to a remote party. When (if) the remote party requests access to the the Smart Contract, the broker will return it automatically, if already authorized. If not authorized, a petition to access the Smart Contract will be sent to the clients of the part of the contract for manual approval.
+      operationId: authorizeAccessToId
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthorizeAccessToContract"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AuthorizeAccessToContract"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AckResponse"
+  /Wallet/GetBalance:
+    post:
+      summary: Get Balance
+      description: Allows the client to retrieve information about the current state of its wallet.
+      operationId: getBalance
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetBalance"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetBalance"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Balance"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Balance"
+  /Wallet/ProcessEDalerUri:
+    post:
+      summary: Process eDaler URI
+      description: Allows the client to process an eDaler URI.
+      operationId: processEDalerUri
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProcessEDalerUri"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ProcessEDalerUri"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProcessResult"
+  /Wallet/GetServiceProvidersForBuyingEDaler:
+    post:
+      summary: Get Service Providers for Buying eDaler
+      description: Allows the client to retrieve a list of available service providers that can be used to buy eDaler.
+      operationId: getServiceProvidersForBuyingEDaler
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDaler"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDaler"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvidersResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProvidersResponse"
+  /Wallet/GetServiceProvidersForSellingEDaler:
+    post:
+      summary: Get Service Providers for Selling eDaler
+      description: Allows the client to retrieve a list of available service providers that can be used to sell eDaler.
+      operationId: getServiceProvidersForSellingEDaler
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetServiceProvidersForSellingEDaler"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetServiceProvidersForSellingEDaler"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvidersResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProvidersResponse"
+  /Wallet/InitiateBuyEDaler:
+    post:
+      summary: Initiate Buy eDaler
+      description: Allows the client to initiate the process of buying eDaler, using a service provider that does not use a smart contract as the basis for the transaction (i.e. a service provider that will require the client to open a third-party page to complete the transaction).
+      operationId: initiateBuyEDaler
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitiateBuyEDaler"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/InitiateBuyEDaler"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+  /Wallet/InitiateSellEDaler:
+    post:
+      summary: Initiate Sell eDaler
+      description: Allows the client to initiate the process of selling eDaler, using a service provider that does not use a smart contract as the basis for the transaction (i.e. a service provider that will require the client to open a third-party page to complete the transaction).
+      operationId: initiateSellEDaler
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitiateSellEDaler"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/InitiateSellEDaler"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+  /Wallet/GetTransactionInformation:
+    post:
+      summary: Get Transaction Information
+      description: |
+        Allows the client to get updated transaction information from the server. It also allows the client to re-register the current Tab ID (from Events.js) and function to call, in case changes are registered with the server-side transaction object. Call this function to restart event notification if you navigate between pages.
+      operationId: getTransactionInformation
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetTransactionInformation"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetTransactionInformation"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+  /Tokens/GetTokens:
+    post:
+      summary: Get Tokens
+      description: Gets a list of tokens on the Neuron® owned by the account.
+      operationId: getTokens
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetTokens"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetTokens"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokensResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TokensResult"
+  /Tokens/GetContractTokens:
+    post:
+      summary: Get Contract Tokens
+      description: Gets a list of tokens on the Neuron® owned by the account, for a specific contract.
+      operationId: getContractTokens
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetContractTokens"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetContractTokens"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokensResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TokensResult"
+  /Tokens/GetCreationAttributes:
+    post:
+      summary: Get Creation Attributes
+      description: Gets the creation attributes for a specific token.
+      operationId: getCreationAttributes
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetCreationAttributes"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetCreationAttributes"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreationAttributes"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CreationAttributes"
+  /Tokens/GetToken:
+    post:
+      summary: Get Token
+      description: Gets information about a specific token.
+      operationId: getToken
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetToken"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetToken"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TokenResult"
+  /Tokens/GetDescription:
+    post:
+      summary: Get Description
+      description: Creates a report relating to a state machine associated with a token.
+      operationId: getDescription
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetDescription"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetDescription"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ReportResult"
+  /Tokens/AddTextNote:
+    post:
+      summary: Add Text Note
+      description: Adds a text note to a token.
+      operationId: addTextNote
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddTextNote"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AddTextNote"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoteResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/NoteResult"
+  /Tokens/AddXmlNote:
+    post:
+      summary: Add XML Note
+      description: Adds an XML note to a token.
+      operationId: addXmlNote
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddXmlNote"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AddXmlNote"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoteResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/NoteResult"
+  /Tokens/GetTokenEvents:
+    post:
+      summary: Get Token Events
+      description: Gets a list of events for a specific token.
+      operationId: getTokenEvents
+      tags:
+        - Tokens
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetTokenEvents"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetTokenEvents"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventsResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/EventsResult"
+  /StateMachines/GetCurrentState:
+    post:
+      summary: Get Current State
+      description: Gets the current state of a state machine, associated with a token.
+      operationId: getCurrentState
+      tags:
+        - StateMachines
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetCurrentState"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetCurrentState"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StateResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/StateResult"
+  /StateMachines/CreateReport:
+    post:
+      summary: Create Report
+      description: Creates a report relating to a state machine associated with a token.
+      operationId: createReport
+      tags:
+        - StateMachines
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateReport"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CreateReport"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportResult"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ReportResult"
 components:
   securitySchemes:
     WwwAuth:
@@ -2656,6 +3171,7 @@ components:
       properties:
         Providers:
           type: array
+          nullable: true
           items:
             $ref: "#/components/schemas/Provider"
           xml:
@@ -3065,3 +3581,627 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetCreatedContracts:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: Offset into the list of contracts where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of contracts to return.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ContractsResponse:
+      type: object
+      properties:
+        Contracts:
+          type: array
+          nullable: true
+          items:
+            type: object
+            description: The contract object
+            xml:
+              name: Contract
+              attribute: false
+          xml:
+            name: Contracts
+            wrapped: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AuthorizeAccessToContract:
+      type: object
+      required:
+        - contractId
+        - remoteId
+        - authorized
+      properties:
+        contractId:
+          type: string
+          description: Identifier of the corresponding Smart Contract of the client, or for which the client is part.
+          xml:
+            attribute: true
+        remoteId:
+          type: string
+          description: Identifier of the Legal Identity of the corresponding remote entity.
+          xml:
+            attribute: true
+        authorized:
+          type: boolean
+          description: If the remote entity is authorized access to the corresponding contract or not.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetBalance:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    Balance:
+      type: object
+      required:
+        - amount
+        - reserved
+        - currency
+        - timestamp
+      properties:
+        amount:
+          type: number
+          description: Current amount of eDaler that can be used.
+          xml:
+            attribute: true
+        reserved:
+          type: number
+          description: Current amount of eDaler that has been reserved.
+          xml:
+            attribute: true
+        currency:
+          type: string
+          description: Currency of wallet.
+          xml:
+            attribute: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of balance statement.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ProcessEDalerUri:
+      type: object
+      required:
+        - uri
+      properties:
+        uri:
+          type: string
+          description: URI to process.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ProcessResult:
+      type: object
+      required:
+        - Balance
+      properties:
+        Balance:
+          $ref: "#/components/schemas/Balance"
+        Result:
+          type: object
+          description: The result of the process operation.
+          additionalProperties: true
+          xml:
+            attribute: false
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetServiceProvidersForBuyingEDaler:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetServiceProvidersForSellingEDaler:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    InitiateBuyEDaler:
+      type: object
+      required:
+        - serviceId
+        - serviceProvider
+        - amount
+        - currency
+      properties:
+        serviceId:
+          type: string
+          description: ID of internal eDaler service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+        amount:
+          type: number
+          format: double
+          description: Amount of eDaler to buy.
+          xml:
+            attribute: true
+        currency:
+          type: string
+          description: Currency to buy.
+          xml:
+            attribute: true
+        successUrl:
+          type: string
+          description: URL to redirect to if the operation is successful.
+          xml:
+            attribute: true
+        failureUrl:
+          type: string
+          description: URL to redirect to if the operation fails.
+          xml:
+            attribute: true
+        cancelUrl:
+          type: string
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+        transactionId:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        tabId:
+          type: string
+          description: Tab ID.
+          xml:
+            attribute: true
+
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    InitiateSellEDaler:
+      type: object
+      required:
+        - serviceId
+        - serviceProvider
+        - amount
+        - currency
+      properties:
+        serviceId:
+          type: string
+          description: ID of internal eDaler service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+        amount:
+          type: number
+          format: double
+          description: Amount of eDaler to buy.
+          xml:
+            attribute: true
+        currency:
+          type: string
+          description: Currency to buy.
+          xml:
+            attribute: true
+        successUrl:
+          type: string
+          description: URL to redirect to if the operation is successful.
+          xml:
+            attribute: true
+        failureUrl:
+          type: string
+          description: URL to redirect to if the operation fails.
+          xml:
+            attribute: true
+        cancelUrl:
+          type: string
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+        transactionId:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        tabId:
+          type: string
+          description: Tab ID.
+          xml:
+            attribute: true
+
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    TransactionInformation:
+      type: object
+      required:
+        - id
+        - state
+        - started
+        - ended
+        - serviceId
+        - serviceProvider
+        - amount
+        - currency
+        - successUrl
+        - failureUrl
+        - cancelUrl
+        - clientUrl
+      properties:
+        id:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        state:
+          type: string
+          description: Current state of transaction.
+          xml:
+            attribute: true
+        started:
+          type: string
+          format: date-time
+          description: When the transaction was started.
+          xml:
+            attribute: true
+        ended:
+          type: string
+          format: date-time
+          description: When the transaction ended.
+          xml:
+            attribute: true
+        serviceId:
+          type: string
+          description: ID of internal eDaler service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+        amount:
+          type: number
+          format: double
+          description: Amount of eDaler to buy.
+          xml:
+            attribute: true
+        currency:
+          type: string
+          description: Currency to buy.
+          xml:
+            attribute: true
+        successUrl:
+          type: string
+          description: URL to redirect to if the operation is successful.
+          xml:
+            attribute: true
+        failureUrl:
+          type: string
+          description: URL to redirect to if the operation fails.
+          xml:
+            attribute: true
+        cancelUrl:
+          type: string
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+        clientUrl:
+          type: string
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetTransactionInformation:
+      type: object
+      required:
+        - transactionId
+      properties:
+        transactionId:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        tabId:
+          type: string
+          description: Tab ID.
+          xml:
+            attribute: true
+        functionName:
+          type: string
+          description: Function name.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetTokens:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: Offset into the list of tokens where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of tokens to return.
+          xml:
+            attribute: true
+        references:
+          type: boolean
+          description: If token references is sufficient (true, default), or if entire tokens are to be returned (false).
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    TokensResult:
+      type: object
+      properties:
+        Tokens:
+          type: object
+          additionalProperties: true
+          xml:
+            attribute: false
+            name: Tokens
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetContractTokens:
+      type: object
+      required:
+        - contractId
+      properties:
+        contractId:
+          type: string
+          description: Identity of contract to get tokens for.
+          xml:
+            attribute: true
+        offset:
+          type: integer
+          description: Offset into the list where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of tokens to return.
+          xml:
+            attribute: true
+        references:
+          type: boolean
+          description: If token references is sufficient (true, default), or if entire tokens are to be returned (false).
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetCreationAttributes:
+      type: object
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    CreationAttributes:
+      type: object
+      required:
+        - currency
+        - commision
+        - trustProvider
+      properties:
+        currency:
+          type: string
+          description: Currency of wallet.
+          xml:
+            attribute: true
+        commision:
+          type: number
+          format: double
+          description: Commision to charge.
+          xml:
+            attribute: true
+        trustProvider:
+          type: string
+          description: Trust provider to use.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetToken:
+      type: object
+      required:
+        - tokenId
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to get.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    TokenResult:
+      type: object
+      properties:
+        Token:
+          type: object
+          additionalProperties: true
+          xml:
+            attribute: false
+            name: Token
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetDescription:
+      type: object
+      required:
+        - tokenId
+        - reportFormat
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to get description for.
+          xml:
+            attribute: true
+        reportFormat:
+          $ref: "#/components/schemas/reportFormat"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    ReportResult:
+      type: object
+      required:
+        - report
+      properties:
+        report:
+          type: string
+          description: Generated report.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AddTextNote:
+      type: object
+      required:
+        - tokenId
+        - note
+        - personal
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to add text note to.
+          xml:
+            attribute: true
+        note:
+          type: string
+          description: Text note to add.
+          xml:
+            attribute: true
+        personal:
+          type: boolean
+          description: If the note is personal or note. Personal notes are deleted when the token changes owner.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    NoteResult:
+      type: object
+      required:
+        - Note
+      properties:
+        Note:
+          type: object
+          additionalProperties: true
+          xml:
+            attribute: false
+            name: Note
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    AddXmlNote:
+      type: object
+      required:
+        - tokenId
+        - note
+        - personal
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to add XML note to.
+          xml:
+            attribute: true
+        note:
+          type: string
+          description: XML note to add.
+          xml:
+            attribute: true
+        personal:
+          type: boolean
+          description: If the note is personal or note. Personal notes are deleted when the token changes owner.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetTokenEvents:
+      type: object
+      required:
+        - tokenId
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to get events for.
+          xml:
+            attribute: true
+        offset:
+          type: integer
+          description: Offset into the list where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of events to return.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    EventsResult:
+      type: object
+      properties:
+        Events:
+          type: object
+          additionalProperties: true
+          xml:
+            name: Events
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetCurrentState:
+      type: object
+      required:
+        - tokenId
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to get current state for.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    CreateReport:
+      type: object
+      required:
+        - tokenId
+        - reportType
+        - reportFormat
+      properties:
+        tokenId:
+          type: string
+          description: Identity of token to get description for.
+          xml:
+            attribute: true
+        reportType:
+          type: string
+          description: Type of report to generate.
+          enum:
+            - Present
+            - Historsy
+            - StateDiagram
+            - Profiling
+          xml:
+            attribute: true
+        reportFormat:
+          $ref: "#/components/schemas/reportFormat"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    reportFormat:
+      type: string
+      description: Format of report.
+      enum:
+        - Html
+        - Text
+        - Xml
+        - Markdown
+        - Xaml
+        - XamarinXaml
+        - SmartContract
+      xml:
+        attribute: true
