@@ -23,8 +23,7 @@ paths:
       summary: Get Domain Info
       description: |
         Gets human-readable information
-        about the domain of the server. This resource is accessed using HTTP GET, so there is no 
-        payload sent to resource. The request can be made anonymously. No authentication is 
+        about the domain of the server. The request can be made anonymously. No authentication is 
         required. This resource is typically called in the beginning of an on-boarding process, 
         where the user is given a choice to select service provider (i.e. domain).
       operationId: getDomainInfo
@@ -52,20 +51,89 @@ paths:
     post:
       summary: Create Account
       description: |
-        This endpoint is for creating a new account. A unique signature is required.
+        Creates an agent account on the server (and logs in to it). This account can be used 
+        when logging in, using the Agent API, but also to connect to the Neuron(R) using any of 
+        the available XMPP bindings available. The account that is created, is considered a 
+        regular XMPP account on the broker.
 
-        **Calculating Signature:**
+        When first created, the account is in a disabled state. You need to validate the
+        e-mail address provided in the request first, before the account can be enabled.
+        An e-mail with a verification code will be sent to the e-mail address provided in
+        the request.
 
-        Concatenate the strings userName ":" host ":" eMail ":" password ":" apiKey ":" nonce and call it s, where Host is the host/domain name of the server. It is taken from the HTTP Host request header, so it must be the same as is used in the URL of the request.
+        **Security Notice**: This resource requires an API Key and Secret to be provided.
+        These are [requested from the operator]({domain}/RequestApiKey.md) and must be protected.
+        If compromized, the operator can choose to disable the key. This resource should
+        therefore only be used by clients that can protect such credentials. If creating 
+        an account in an environment where protecting such credentials is not possible 
+        (such as a web page running on a client browser), use the 
+        [CreateWebForm]({domain}/CreateWebForm.md) resource instead. Each API Key is given a number 
+        of accounts that can be created with that key. If that limit is reached, no more 
+        accounts can be created using that key, until the limit is increased or existing
+        accounts created by that API Key is deleted.
 
-        UTF-8 encode the secret corresponding to the API key, and call it Key.
+        Input Parameters
+        -------------------
 
-        UTF-8 encode the string s, and call it Data.
+        | Parameter    | Description |
+        |:-------------|:------------|
+        | `PUserName`  | User Name of the account to create. |
+        | `PEMail`     | e-Mail address of the user. |
+        | `PPassword`  | Password to use. |
+        | `PApiKey`    | API Key to use, to get privileges to create an account. |
+        | `PNonce`     | A unique random string, at least 32 characters long, with sufficient entropy to not be reused again. If reused, an error will be returned. |
+        | `PSignature` | Cryptographic signature of request. |
+        | `PSeconds`   | Requested number of seconds before the JWT token that will be issued expires. |
 
-        Calculate the HMAC-SHA256 signature using Key and Data, and call it H.
+        Response Parameters
+        -----------------------
 
-        Base64-encode H. The result is the signature of the request.
+        | Parameter   | Description |
+        |:------------|:------------|
+        | `PCreated`  | When account was created (server timestamp). |
+        | `PEnabled`  | If account is enabled or not. When creating an account, it's disabled by default, until the e-mail address has been validated. |
+        | `PCanRelay` | If account can be used to relay e-mails. |
+        | `PJwt`      | A token representing the login to the account. This token is seant as a [Bearer token](https://www.rfc-editor.org/rfc/rfc6750) in requests requiring authentication. |
+        | `PExpires`  | When the JWT token expires. The token needs to be renewed before this token expires, if the client wishes to maintain the connection. After the token expires, the client needs to login again. |
 
+        **Note**: If trying to create an account that already exists, and that is enabled, but 
+        using the same password as the existing account, and if PLAIN authentication is permitted
+        on the server, the request will be treated as a login request. The timestamp of the 
+        creation of the account can be seen in the response to the request.
+
+        Calculating Signature
+        ------------------------
+
+        The signature in `PSignature` is calculated as follows.
+
+        1. Concatenate the strings `PUserName ":" Host ":" PEMail ":" PPassword ":" PApiKey ":" PNonce`
+        and call it `s`, where `Host` is the host/domain name of the server. It is taken from
+        the HTTP `Host` request header, so it must be the same as is used in the URL of the
+        request.
+
+        2. UTF-8 encode the *secret* corresponding to the API key, and call it `Key`.
+
+        3. UTF-8 encode the string `s`, and call it `Data`.
+
+        4. Calculate the HMAC-SHA256 signature using `Key` and `Data`, and call it `H`.
+
+        5. Base64-encode `H`. The result is the signature of the request.
+
+        Signature Audits
+        -------------------
+
+        Signatures are audited. If too many failed signature attempts are received in a row from
+        a given remote endpoint, that endpoint will be temporarily blocked from further
+        attempts. Error message will contain a timestamp when new attempts can be made.
+        If continuing failing, a remote endpoint may become permanently blocked from accessing
+        the API.
+
+        Alternative Name Suggestions
+        -------------------------------
+
+        If unable to create an account, suggestions for alternative account names will be returned as
+        HTTP headers, with header names `X-AlternativeNameN`, where N is a random number starting with
+        `1`. Digits will be two or more digits.
       operationId: createAccount
       tags:
         - "Account"
@@ -75,12 +143,20 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateAccount"
+            example: 
+              userName: Required(Str(PUserName)),
+              eMail: Required(Str(PEMail)),
+              password: Required(Str(PPassword)),
+              apiKey: Required(Str(PApiKey)),
+              nonce: Required(Str(PNonce)),
+              signature: Required(Str(PSignature)),
+              seconds: Required(Int(0 < PSeconds <= 3600))
           application/xml:
             schema:
               $ref: "#/components/schemas/CreateAccount"
       responses:
-        "201":
-          description: Account created successfully
+        "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1479,6 +1555,65 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
+  /Wallet/GetPaymentOptionsForBuyingEDaler:
+    post:
+      summary: Get Payment Options for Buying eDaler
+      description: |
+        Allows the client to initiate the process of getting payment options for buying eDaler.
+
+      operationId: getPaymentOptionsForBuyingEDaler
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDaler"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDaler"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+  /Wallet/GetPaymentOptionsForSellingEDaler:
+    post:
+      summary: Get Payment Options for Selling eDaler
+      description: |
+        Allows the client to initiate the process of getting payment options for selling eDaler.
+
+      operationId: getPaymentOptionsForSellingEDaler
+      tags:
+        - Wallet
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDaler"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDaler"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TransactionInformation"
   /Wallet/InitiateBuyEDaler:
     post:
       summary: Initiate Buy eDaler
@@ -1841,6 +1976,22 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    url:
+      type: string
+      format: uri
+    id:
+      type: string
+      format: uuid
+    timestamp:
+      type: string
+      format: date-time
+    eMail:
+      type: string
+      format: email
+    password:
+      type: string
+      format: password
+    
     DomainInfo:
       type: object
       required:
@@ -3707,6 +3858,65 @@ components:
       type: object
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    
+    PaymentOptionsSchema:
+      type: object
+      required:
+        - serviceId
+        - serviceProvider
+      properties:
+        serviceId:
+          type: string
+          description: ID of internal eDaler service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+        successUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation is successful.
+          xml:
+            attribute: true
+        failureUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation fails.
+          xml:
+            attribute: true
+        cancelUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+        transactionId:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        tabId:
+          type: string
+          description: Tab ID.
+          xml:
+            attribute: true
+        functionName:
+          type: string
+          description: Function name.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+
+    GetPaymentOptionsForBuyingEDaler:
+      $ref: '#/components/schemas/PaymentOptionsSchema'
+
+    GetPaymentOptionsForSellingEDaler:
+      $ref: '#/components/schemas/PaymentOptionsSchema'
+    
     InitiateBuyEDaler:
       type: object
       required:
@@ -4205,3 +4415,14 @@ components:
         - SmartContract
       xml:
         attribute: true
+    StateResult:
+      type: object
+      properties:
+        CurrentState:
+          type: object
+          additionalProperties: true
+          xml:
+            attribute: false
+            name: CurrentState
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"

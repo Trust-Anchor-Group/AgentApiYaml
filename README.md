@@ -26,8 +26,8 @@ The specification can be used for testing and with tools such as SwaggerUI and S
 
 | Endpoint                                     | Available      | Documented      |
 |----------------------------------------------|----------------|-----------------|
-| `/Account/DomainInfo`                        | ✅             |❌              |
-| `/Account/Create`                            | ✅             |❌              |
+| `/Account/DomainInfo`                        | ✅             |✅              |
+| `/Account/Create`                            | ✅             |✅              |
 | `/Account/GetSessionToken`                   | ✅             |❌              |
 | `/Account/VerifyEMail`                       | ✅             |❌              |
 | `/Account/Login`                             | ✅             |❌              |
@@ -79,6 +79,8 @@ The specification can be used for testing and with tools such as SwaggerUI and S
 | `/Wallet/ProcessEDalerUri`                   | ✅             |❌              |
 | `/Wallet/GetServiceProvidersForBuyingEDaler` | ✅             |❌              |
 | `/Wallet/GetServiceProvidersForSellingEDaler`| ✅             |❌              |
+| `/Wallet/GetPaymentOptionsForBuyingEDaler`   | ✅             |❌              |
+| `/Wallet/GetPaymentOptionsForSellingEDaler`  | ✅             |❌              |
 | `/Wallet/InitiateBuyEDaler`                  | ✅             |❌              |
 | `/Wallet/InitiateSellEDaler`                 | ✅             |❌              |
 | `/Wallet/GetTransactionInformation`          | ✅             |❌              |
