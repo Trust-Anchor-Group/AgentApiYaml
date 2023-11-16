@@ -144,16 +144,25 @@ paths:
             schema:
               $ref: "#/components/schemas/CreateAccount"
             example: 
-              userName: Required(Str(PUserName)),
-              eMail: Required(Str(PEMail)),
-              password: Required(Str(PPassword)),
-              apiKey: Required(Str(PApiKey)),
-              nonce: Required(Str(PNonce)),
-              signature: Required(Str(PSignature)),
+              userName: Required(Str(PUserName))
+              eMail: Required(Str(PEMail))
+              password: Required(Str(PPassword))
+              apiKey: Required(Str(PApiKey))
+              nonce: Required(Str(PNonce))
+              signature: Required(Str(PSignature))
               seconds: Required(Int(0 < PSeconds <= 3600))
           application/xml:
             schema:
               $ref: "#/components/schemas/CreateAccount"
+            example: |
+              <CreateAccount xmlns="https://waher.se/Schema/BrokerAgent.xsd"
+                userName=(Required(Str(PUserName)))
+                eMail=(Required(Str(PEMail)))
+                password=(Required(Str(PPassword)))
+                apiKey=(Required(Str(PApiKey)))
+                nonce=(Required(Str(PNonce)))
+                signature=(Required(Str(PSignature)))
+                seconds=(Required(Int(0 < PSeconds <= 3600))) />
       responses:
         "200":
           description: OK
@@ -161,6 +170,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccountCreated"
+              example:
+                created: Required(DateTime(PCreated))
+                enabled: Required(Bool(PEnabled))
+                canRelay: Required(Bool(PCanRelay))
+                jwt: Required(Str(PJwt))
+                expires: Required(DateTime(PExpires))
             application/xml:
               schema:
                 $ref: "#/components/schemas/AccountCreated"
