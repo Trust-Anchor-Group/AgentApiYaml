@@ -59,7 +59,7 @@ The specification can be used for testing and with tools such as SwaggerUI and S
 | `/Crypto/GetPublicKey`                       | ✅             |❌              |
 | `/Legal/ValidatePNr`                         | ✅             |❌              |
 | `/Legal/GetApplicationAttributes`            | ✅             |❌              |
-| `/Legal/GetIdentity`                         | ⚠️             |❌              |
+| `/Legal/GetIdentity`                         | ✅             |❌              |
 | `/Legal/AddIdAttachment`                     | ✅             |❌              |
 | `/Legal/ReadyForApproval`                    | ✅             |❌              |
 | `/Legal/GetServiceProviderForIdReview`       | ✅             |❌              |
@@ -72,7 +72,7 @@ The specification can be used for testing and with tools such as SwaggerUI and S
 | `/Legal/GetContract`                         | ✅             |❌              |
 | `/Legal/SignContract`                        | ✅             |❌              |
 | `/Legal/SignData`                            | ✅             |❌              |
-| `/Legal/GetIdentities`                       | ❌             |❌              |
+| `/Legal/GetIdentities`                       | ✅             |❌              |
 | `/Legal/GetCreatedContracts`                 | ✅             |❌              |
 | `/Legal/AuthorizeAccessToContract`           | ✅             |❌              |
 | `/Wallet/GetBalance`                         | ✅             |❌              |

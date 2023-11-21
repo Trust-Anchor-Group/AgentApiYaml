@@ -143,7 +143,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateAccount"
-            example: 
+            example:
               userName: Required(Str(PUserName)),
               eMail: Required(Str(PEMail)),
               password: Required(Str(PPassword)),
@@ -1038,11 +1038,11 @@ paths:
                 $ref: "#/components/schemas/ApplicationAttributes"
   /Legal/GetIdentity:
     post:
-      summary: Get Legal Identity (NOT IMPLEMENTED)
+      summary: Get Legal Identity
       description: Allows the client to get an Identity. If the Identity belongs to someone else, and the client is not authorized access to the Identity, an error will be returned.
       operationId: getIdentity
       tags:
-        - Unavailable
+        - Legal
       security:
         - BearerAuth: []
       requestBody:
@@ -1050,6 +1050,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GetIdentity"
+
           application/xml:
             schema:
               $ref: "#/components/schemas/GetIdentity"
@@ -1063,6 +1064,33 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
+  /Legal/GetIdentities:
+    post:
+      summary: Get Legal Identities
+      description: Allows the client to get a list of identities. If the identities belong to someone else, and the client is not authorized access to the identities, an error will be returned.
+      operationId: getIdentities
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetIdentities"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetIdentities"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentitiesResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/IdentitiesResponse"
   /Legal/AddIdAttachment:
     post:
       summary: Add attachment to legal id application (NOT IMPLEMENTED)
@@ -1421,10 +1449,10 @@ paths:
                 $ref: "#/components/schemas/ContractsResponse"
   /Legal/AuthorizeAccessToContract:
     post:
-      summary: Authorize Access to ID
+      summary: Authorize Access to Contract
       description: |
         Allows the client to (pre-)authorize access to (or remove authorization to access) one of its Smart Contracts (or one of the Smart Contracts for which the client is part) to a remote party. When (if) the remote party requests access to the the Smart Contract, the broker will return it automatically, if already authorized. If not authorized, a petition to access the Smart Contract will be sent to the clients of the part of the contract for manual approval.
-      operationId: authorizeAccessToId
+      operationId: authorizeAccessToContract
       tags:
         - Legal
       security:
@@ -1991,7 +2019,7 @@ components:
     password:
       type: string
       format: password
-    
+
     DomainInfo:
       type: object
       required:
@@ -3174,10 +3202,44 @@ components:
       properties:
         Identity:
           type: object
-          example: "NOT IMPLEMENTED YET"
+          additionalProperties: true
           xml:
             name: Identity
-            wrapped: false
+            namespace: "urn:ieee:iot:leg:id:1.0"
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetIdentities:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: Offset into the identities where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of identities to return.
+          xml:
+            attribute: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    IdentitiesResponse:
+      type: object
+      required:
+        - Identity
+      properties:
+        Identities:
+          type: array
+          nullable: true
+          items:
+            type: object
+            additionalProperties: true
+            xml:
+              name: Identity
+              namespace: "urn:ieee:iot:leg:id:1.0"
+          xml:
+            name: Identities
+            wrapped: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     AddIdAttachment:
@@ -3858,7 +3920,7 @@ components:
       type: object
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    
+
     PaymentOptionsSchema:
       type: object
       required:
@@ -3912,11 +3974,11 @@ components:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
 
     GetPaymentOptionsForBuyingEDaler:
-      $ref: '#/components/schemas/PaymentOptionsSchema'
+      $ref: "#/components/schemas/PaymentOptionsSchema"
 
     GetPaymentOptionsForSellingEDaler:
-      $ref: '#/components/schemas/PaymentOptionsSchema'
-    
+      $ref: "#/components/schemas/PaymentOptionsSchema"
+
     InitiateBuyEDaler:
       type: object
       required:
