@@ -221,6 +221,7 @@ paths:
       tags:
         - Account
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2240,8 +2241,7 @@ components:
           xml:
             attribute: true
         expires:
-          type: string
-          format: date-time
+          type: integer
           description: The timestamp when the jwt token expires.
           xml:
             attribute: true
