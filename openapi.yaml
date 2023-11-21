@@ -221,7 +221,6 @@ paths:
       tags:
         - Account
       requestBody:
-        required: true
         content:
           application/json:
             schema:
