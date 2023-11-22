@@ -2204,18 +2204,15 @@ components:
         userName:
           type: string
           description: The user name of the account.
-          nullable: false
           xml:
             attribute: true
         nonce:
           type: string
           description: A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.
-          nullable: false
           xml:
             attribute: true
         signature:
           type: string
-          nullable: false
           description: >
             The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
 
@@ -2223,7 +2220,6 @@ components:
             attribute: true
         seconds:
           type: integer
-          nullable: false
           description: The number of seconds until the request expires.
           minimum: 0
           maximum: 3600
