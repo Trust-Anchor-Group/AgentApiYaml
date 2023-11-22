@@ -9,7 +9,7 @@ info:
     The Full API is
   version: 1.0.0
 servers:
-  - url: https://{domain}/Agent
+  - url: https://{domain}
     description: Sample Server
     variables:
       domain:
@@ -45,6 +45,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/DomainInfo"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+
   /Agent/Account/Create:
     post:
       summary: Create Account
@@ -74,7 +89,7 @@ paths:
         -------------------
 
         | Parameter    | Description |
-        |:-------------|:------------|
+        |-------------|------------|
         | `PUserName`  | User Name of the account to create. |
         | `PEMail`     | e-Mail address of the user. |
         | `PPassword`  | Password to use. |
@@ -87,7 +102,7 @@ paths:
         -----------------------
 
         | Parameter   | Description |
-        |:------------|:------------|
+        |------------|------------|
         | `PCreated`  | When account was created (server timestamp). |
         | `PEnabled`  | If account is enabled or not. When creating an account, it's disabled by default, until the e-mail address has been validated. |
         | `PCanRelay` | If account can be used to relay e-mails. |
@@ -162,6 +177,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AccountCreated"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Account/GetSessionToken:
     post:
       summary: Get newly created account created using a web form
@@ -187,6 +216,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SessionToken"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Account/VerifyEMail:
     post:
       summary: Verify E-Mail
@@ -212,6 +255,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/EMailVerified"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Account/Login:
     post:
       summary: Login
@@ -237,6 +294,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/LoggedIn"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Account/WwwLogin:
     post:
       summary: Login
@@ -261,6 +332,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/LoggedIn"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
       security:
         - WwwAuth: []
   /Agent/Account/Refresh:
@@ -290,6 +375,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/LoggedIn"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Account/Logout:
     post:
       summary: Logout
@@ -316,6 +415,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Account/Recover:
     post:
       summary: Recover Account
@@ -340,6 +453,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RecoverResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendTextMessage:
     post:
       summary: Send Text Message
@@ -368,6 +495,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendFormattedMessage:
     post:
       summary: Send Formatted Message
@@ -396,6 +537,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendXmlMessage:
     post:
       summary: Send XML Message
@@ -424,6 +579,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendPresenceSubscription:
     post:
       summary: Send Presence Subscription
@@ -452,6 +621,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PresenceSubscriptionResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendPresenceUnsubscription:
     post:
       summary: Send Presence Unsubscription
@@ -480,6 +663,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendSubscriptionAccepted:
     post:
       summary: Send Subscription Accepted
@@ -508,6 +705,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SubscriptionAcceptedResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SendSubscriptionDeclined:
     post:
       summary: Send Subscription Declined
@@ -536,6 +747,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/GetRoster:
     post:
       summary: Get Roster
@@ -563,6 +788,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Roster"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/GetRosterItem:
     post:
       summary: Get Roster Item
@@ -591,6 +830,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/SetRosterItem:
     post:
       summary: Set Roster Item
@@ -619,6 +872,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/RemoveRosterItem:
     post:
       summary: Remove Roster Item
@@ -647,6 +914,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/PresenceProbe:
     post:
       summary: Presence Probe
@@ -675,6 +956,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProbeResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/InformationQuery:
     post:
       summary: Information Query
@@ -703,6 +998,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/QueryResultXml"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Xmpp/PopMessages:
     post:
       summary: Pop Messages
@@ -730,6 +1039,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/MessageResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Storage/SavePrivateXml:
     post:
       summary: Save Private XML
@@ -758,6 +1081,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Stored"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Storage/LoadPrivateXml:
     post:
       summary: Load Private XML
@@ -786,6 +1123,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PrivateXml"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Storage/Content:
     post:
       summary: Upload new content using form data
@@ -816,6 +1167,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Storage/Content/{username}/{contentId}:
     put:
       summary: Upload new content with Content ID
@@ -862,6 +1227,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Storage/Content/{path}:
     delete:
       summary: Deletes content from path
@@ -880,6 +1259,20 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
     get:
       summary: Get content from path
       operationId: getContent
@@ -904,6 +1297,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Crypto/GetAlgorithms:
     post:
       summary: Get Algorithms
@@ -929,6 +1336,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AlgorithmsResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Crypto/CreateKey:
     post:
       summary: Create Key
@@ -955,6 +1376,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Stored"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Crypto/GetPublicKey:
     post:
       summary: Get Public Key
@@ -980,6 +1415,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PublicKey"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/ValidatePNr:
     post:
       summary: Validate Personal Number
@@ -1007,6 +1456,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ValidatePNrResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/GetApplicationAttributes:
     post:
       summary: Get Application Attributes
@@ -1034,6 +1497,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ApplicationAttributes"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/GetIdentity:
     post:
       summary: Get Legal Identity
@@ -1062,6 +1539,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/GetIdentities:
     post:
       summary: Get Legal Identities
@@ -1089,6 +1580,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentitiesResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/AddIdAttachment:
     post:
       summary: Add attachment to legal id application (NOT IMPLEMENTED)
@@ -1116,6 +1621,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/ReadyForApproval:
     post:
       summary: Ready for Approval
@@ -1148,6 +1667,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/GetServiceProviderForIdReview:
     post:
       summary: Get Service Provider for ID Review
@@ -1175,6 +1708,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/SelectReviewService:
     post:
       summary: Select Review Service
@@ -1202,6 +1749,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/AuthorizeAccessToId:
     post:
       summary: Authorize Access to ID
@@ -1229,6 +1790,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/PetitionPeerReview:
     post:
       summary: Petition Peer Review
@@ -1256,6 +1831,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/PetitionId:
     post:
       summary: Petition ID
@@ -1283,6 +1872,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/PetitionSignature:
     post:
       summary: Petition Signature
@@ -1310,6 +1913,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/CreateContract:
     post:
       summary: Create Contract
@@ -1337,6 +1954,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/GetContract:
     post:
       summary: Get Contract
@@ -1364,6 +1995,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/SignContract:
     post:
       summary: Sign Contract
@@ -1391,6 +2036,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/SignData:
     post:
       summary: Sign Data
@@ -1418,6 +2077,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SignatureResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/GetCreatedContracts:
     post:
       summary: Get Created Contracts
@@ -1445,6 +2118,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/AuthorizeAccessToContract:
     post:
       summary: Authorize Access to Contract
@@ -1473,6 +2160,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/GetBalance:
     post:
       summary: Get Balance
@@ -1500,6 +2201,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Balance"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/ProcessEDalerUri:
     post:
       summary: Process eDaler URI
@@ -1527,6 +2242,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProcessResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/GetServiceProvidersForBuyingEDaler:
     post:
       summary: Get Service Providers for Buying eDaler
@@ -1554,6 +2283,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/GetServiceProvidersForSellingEDaler:
     post:
       summary: Get Service Providers for Selling eDaler
@@ -1581,6 +2324,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/GetPaymentOptionsForBuyingEDaler:
     post:
       summary: Get Payment Options for Buying eDaler
@@ -1610,6 +2367,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/GetPaymentOptionsForSellingEDaler:
     post:
       summary: Get Payment Options for Selling eDaler
@@ -1640,6 +2411,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/InitiateBuyEDaler:
     post:
       summary: Initiate Buy eDaler
@@ -1667,6 +2452,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/InitiateSellEDaler:
     post:
       summary: Initiate Sell eDaler
@@ -1694,6 +2493,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Wallet/GetTransactionInformation:
     post:
       summary: Get Transaction Information
@@ -1722,6 +2535,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/GetTokens:
     post:
       summary: Get Tokens
@@ -1749,6 +2576,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokensResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/GetContractTokens:
     post:
       summary: Get Contract Tokens
@@ -1776,6 +2617,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokensResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/GetCreationAttributes:
     post:
       summary: Get Creation Attributes
@@ -1803,6 +2658,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/CreationAttributes"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/GetToken:
     post:
       summary: Get Token
@@ -1830,6 +2699,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokenResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/GetDescription:
     post:
       summary: Get Description
@@ -1857,6 +2740,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ReportResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/AddTextNote:
     post:
       summary: Add Text Note
@@ -1884,6 +2781,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/NoteResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/AddXmlNote:
     post:
       summary: Add XML Note
@@ -1911,6 +2822,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/NoteResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Tokens/GetTokenEvents:
     post:
       summary: Get Token Events
@@ -1938,6 +2863,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/EventsResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/StateMachines/GetCurrentState:
     post:
       summary: Get Current State
@@ -1965,6 +2904,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StateResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/StateMachines/CreateReport:
     post:
       summary: Create Report
@@ -1992,6 +2945,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ReportResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
 components:
   securitySchemes:
     WwwAuth:
@@ -4486,3 +5453,18 @@ components:
             name: CurrentState
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+  responses:
+    BadRequestResponse:
+      description: Bad request, most probably due to the content sent in the request not conforming to the specification.
+    UnauthorizedResponse:
+      description: Unauthorized access to a resource was prevented. Client must login first.
+    ForbiddenResponse:
+      description: Forbidden access to resource was stopped. Client does not have sufficient privileges to access resource or perform requested action, or access is done using unencrypted, or a connection that is not sufficiently encrypted.
+    NotFoundResponse:
+      description: Resource, or item referenced in request, was not found.
+    MethodNotAllowedResponse:
+      description: Method not allowed. The method used in the request is not allowed for the resource.
+    NotAcceptableResponse:
+      description: Content sent, or content requested in a format that is not supported by the resource.
+    TooManyRequestsResponse:
+      description: Too many requests have been made, for this resource, or any of the referenced resources in the request.
