@@ -15,10 +15,8 @@ servers:
       domain:
         default: localhost
         description: This variable determines the domain of the API
-  - url: https://localhost/Agent
-    description: Local Server
 paths:
-  /Account/DomainInfo:
+  /Agent/Account/DomainInfo:
     get:
       summary: Get Domain Info
       description: |
@@ -47,7 +45,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/DomainInfo"
-  /Account/Create:
+  /Agent/Account/Create:
     post:
       summary: Create Account
       description: |
@@ -164,7 +162,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AccountCreated"
-  /Account/GetSessionToken:
+  /Agent/Account/GetSessionToken:
     post:
       summary: Get newly created account created using a web form
       description: Allows the client to get session information about a newly created account, created using a web form, without having to provide user credentials again.
@@ -189,7 +187,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SessionToken"
-  /Account/VerifyEMail:
+  /Agent/Account/VerifyEMail:
     post:
       summary: Verify E-Mail
       operationId: verifyEMail
@@ -214,7 +212,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/EMailVerified"
-  /Account/Login:
+  /Agent/Account/Login:
     post:
       summary: Login
       operationId: login
@@ -239,7 +237,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/LoggedIn"
-  /Account/WwwLogin:
+  /Agent/Account/WwwLogin:
     post:
       summary: Login
       operationId: wwwLogin
@@ -265,7 +263,7 @@ paths:
                 $ref: "#/components/schemas/LoggedIn"
       security:
         - WwwAuth: []
-  /Account/Refresh:
+  /Agent/Account/Refresh:
     post:
       summary: Refresh
       operationId: refresh
@@ -292,7 +290,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/LoggedIn"
-  /Account/Logout:
+  /Agent/Account/Logout:
     post:
       summary: Logout
       operationId: logout
@@ -318,7 +316,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Account/Recover:
+  /Agent/Account/Recover:
     post:
       summary: Recover Account
       operationId: recover
@@ -342,7 +340,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RecoverResponse"
-  /Xmpp/SendTextMessage:
+  /Agent/Xmpp/SendTextMessage:
     post:
       summary: Send Text Message
       description: Allows the client to send a plain text chat message from its account to an XMPP recipient.
@@ -370,7 +368,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendFormattedMessage:
+  /Agent/Xmpp/SendFormattedMessage:
     post:
       summary: Send Formatted Message
       description: Allows the client to send a formatted chat message from its account to an XMPP recipient. A formatted message contains the message in plain text, Markdown and HTML. The recipient, depending on capabilities, will select the representation it handles best to present the message.
@@ -398,7 +396,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendXmlMessage:
+  /Agent/Xmpp/SendXmlMessage:
     post:
       summary: Send XML Message
       description: Allows the client to send a custom XML normal message from its account to an XMPP recipient.
@@ -426,7 +424,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendPresenceSubscription:
+  /Agent/Xmpp/SendPresenceSubscription:
     post:
       summary: Send Presence Subscription
       description: Allows the client to send a presence subscription stanza from its account to an XMPP recipient.
@@ -454,7 +452,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PresenceSubscriptionResult"
-  /Xmpp/SendPresenceUnsubscription:
+  /Agent/Xmpp/SendPresenceUnsubscription:
     post:
       summary: Send Presence Unsubscription
       description: Allows the client to send a presence unsubscription stanza from its account to an XMPP recipient.
@@ -482,7 +480,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendSubscriptionAccepted:
+  /Agent/Xmpp/SendSubscriptionAccepted:
     post:
       summary: Send Subscription Accepted
       description: Allows the client to accept a presence subscription made to its account.
@@ -510,7 +508,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SubscriptionAcceptedResult"
-  /Xmpp/SendSubscriptionDeclined:
+  /Agent/Xmpp/SendSubscriptionDeclined:
     post:
       summary: Send Subscription Declined
       description: Allows the client to decline a presence subscription made to its account.
@@ -538,7 +536,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/GetRoster:
+  /Agent/Xmpp/GetRoster:
     post:
       summary: Get Roster
       description: Allows the client to get the roster of its account.
@@ -565,7 +563,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Roster"
-  /Xmpp/GetRosterItem:
+  /Agent/Xmpp/GetRosterItem:
     post:
       summary: Get Roster Item
       description: Allows the client to get a specific roster item of its account.
@@ -593,7 +591,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
-  /Xmpp/SetRosterItem:
+  /Agent/Xmpp/SetRosterItem:
     post:
       summary: Set Roster Item
       description: Sets information about a specific roster item for the account.
@@ -621,7 +619,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
-  /Xmpp/RemoveRosterItem:
+  /Agent/Xmpp/RemoveRosterItem:
     post:
       summary: Remove Roster Item
       description: Removes a specific roster item from the account.
@@ -649,7 +647,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
-  /Xmpp/PresenceProbe:
+  /Agent/Xmpp/PresenceProbe:
     post:
       summary: Presence Probe
       description: Gets the latest presence issued by a contact in your roster who has approved your presence subscription request.
@@ -677,7 +675,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProbeResult"
-  /Xmpp/InformationQuery:
+  /Agent/Xmpp/InformationQuery:
     post:
       summary: Information Query
       description: Sends an Information Query (iq) to an entity on the XMPP network, given its Full JID. For connected entities, you need to have an presence subscription to that entity, approved by the entity, to get the Full JID. You get the Full JID using the Presence Probe resource.
@@ -705,7 +703,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/QueryResultXml"
-  /Xmpp/PopMessages:
+  /Agent/Xmpp/PopMessages:
     post:
       summary: Pop Messages
       operationId: popMessages
@@ -732,7 +730,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/MessageResult"
-  /Storage/SavePrivateXml:
+  /Agent/Storage/SavePrivateXml:
     post:
       summary: Save Private XML
       description: Saves private XML data to the server.
@@ -760,7 +758,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Stored"
-  /Storage/LoadPrivateXml:
+  /Agent/Storage/LoadPrivateXml:
     post:
       summary: Load Private XML
       description: Loads private XML data from the server.
@@ -788,7 +786,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PrivateXml"
-  /Storage/Content:
+  /Agent/Storage/Content:
     post:
       summary: Upload new content using form data
       operationId: postContent
@@ -818,7 +816,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
-  /Storage/Content/{username}/{contentId}:
+  /Agent/Storage/Content/{username}/{contentId}:
     put:
       summary: Upload new content with Content ID
       operationId: putContent
@@ -864,7 +862,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
-  /Storage/Content/{path}:
+  /Agent/Storage/Content/{path}:
     delete:
       summary: Deletes content from path
       operationId: deleteContent
@@ -906,7 +904,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
-  /Crypto/GetAlgorithms:
+  /Agent/Crypto/GetAlgorithms:
     post:
       summary: Get Algorithms
       description: Gets a list of algorithms supported by the server.
@@ -931,7 +929,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AlgorithmsResult"
-  /Crypto/CreateKey:
+  /Agent/Crypto/CreateKey:
     post:
       summary: Create Key
       description: >
@@ -957,7 +955,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Stored"
-  /Crypto/GetPublicKey:
+  /Agent/Crypto/GetPublicKey:
     post:
       summary: Get Public Key
       description: Gets the public key of a key pair.
@@ -982,7 +980,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PublicKey"
-  /Legal/ValidatePNr:
+  /Agent/Legal/ValidatePNr:
     post:
       summary: Validate Personal Number
       description: Allows the client to validate a personal number before using it to apply for a Legal Identity.
@@ -1009,7 +1007,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ValidatePNrResponse"
-  /Legal/GetApplicationAttributes:
+  /Agent/Legal/GetApplicationAttributes:
     post:
       summary: Get Application Attributes
       description: Allows the client to get the attributes of a legal identity application.
@@ -1036,7 +1034,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ApplicationAttributes"
-  /Legal/GetIdentity:
+  /Agent/Legal/GetIdentity:
     post:
       summary: Get Legal Identity
       description: Allows the client to get an Identity. If the Identity belongs to someone else, and the client is not authorized access to the Identity, an error will be returned.
@@ -1064,7 +1062,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
-  /Legal/GetIdentities:
+  /Agent/Legal/GetIdentities:
     post:
       summary: Get Legal Identities
       description: Allows the client to get a list of identities. If the identities belong to someone else, and the client is not authorized access to the identities, an error will be returned.
@@ -1091,7 +1089,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentitiesResponse"
-  /Legal/AddIdAttachment:
+  /Agent/Legal/AddIdAttachment:
     post:
       summary: Add attachment to legal id application (NOT IMPLEMENTED)
       description: Allows the client to add an attachment to a Legal Identity application.
@@ -1118,7 +1116,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
-  /Legal/ReadyForApproval:
+  /Agent/Legal/ReadyForApproval:
     post:
       summary: Ready for Approval
       description: |
@@ -1150,7 +1148,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/GetServiceProviderForIdReview:
+  /Agent/Legal/GetServiceProviderForIdReview:
     post:
       summary: Get Service Provider for ID Review
       description: Allows the client to retrieve a list of available service providers that can be used to review a recent ID application.
@@ -1177,7 +1175,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
-  /Legal/SelectReviewService:
+  /Agent/Legal/SelectReviewService:
     post:
       summary: Select Review Service
       description: Allows the client to select an internal peer review service, for reviewing a recent identity application.
@@ -1204,7 +1202,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/AuthorizeAccessToId:
+  /Agent/Legal/AuthorizeAccessToId:
     post:
       summary: Authorize Access to ID
       description: Allows the client to (pre-)authorize access to (or remove authorization to access) one of its Legal Identities to a remote party. When (if) the remote party requests the ID, the broker will return it automatically, if already authorized. If not authorized, a petition to access the identity will be sent to the client for manual approval (or rejection).
@@ -1231,7 +1229,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/PetitionPeerReview:
+  /Agent/Legal/PetitionPeerReview:
     post:
       summary: Petition Peer Review
       description: Allows the client to petition a peer review service to review a recent identity application.
@@ -1258,7 +1256,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/PetitionId:
+  /Agent/Legal/PetitionId:
     post:
       summary: Petition ID
       description: Allows the client to petition the owner of a Legal Identity, for information about the identity.
@@ -1285,7 +1283,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/PetitionSignature:
+  /Agent/Legal/PetitionSignature:
     post:
       summary: Petition Signature
       description: Allows the client to petition the owner of a Legal Identity for a digital signature on some digital content.
@@ -1312,7 +1310,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/CreateContract:
+  /Agent/Legal/CreateContract:
     post:
       summary: Create Contract
       description: Allows the client to create a new smart contract, based on an existing (and approved) contract template. The request must be signed using one of the keys created by the client.
@@ -1339,7 +1337,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
-  /Legal/GetContract:
+  /Agent/Legal/GetContract:
     post:
       summary: Get Contract
       description: Allows the client to get a Smart Contract. If the Contract belongs to someone else, and the client is not authorized access to the Contract, an error will be returned.
@@ -1366,7 +1364,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
-  /Legal/SignContract:
+  /Agent/Legal/SignContract:
     post:
       summary: Sign Contract
       description: Allows the client to sign a Smart Contract. The request must be signed using one of the keys created by the client.
@@ -1393,7 +1391,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
-  /Legal/SignData:
+  /Agent/Legal/SignData:
     post:
       summary: Sign Data
       description: Allows the client to sign binary data.
@@ -1420,7 +1418,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SignatureResponse"
-  /Legal/GetCreatedContracts:
+  /Agent/Legal/GetCreatedContracts:
     post:
       summary: Get Created Contracts
       description: Allows the client to get a list of all Smart Contracts created by the client.
@@ -1447,7 +1445,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractsResponse"
-  /Legal/AuthorizeAccessToContract:
+  /Agent/Legal/AuthorizeAccessToContract:
     post:
       summary: Authorize Access to Contract
       description: |
@@ -1475,7 +1473,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Wallet/GetBalance:
+  /Agent/Wallet/GetBalance:
     post:
       summary: Get Balance
       description: Allows the client to retrieve information about the current state of its wallet.
@@ -1502,7 +1500,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Balance"
-  /Wallet/ProcessEDalerUri:
+  /Agent/Wallet/ProcessEDalerUri:
     post:
       summary: Process eDaler URI
       description: Allows the client to process an eDaler URI.
@@ -1529,7 +1527,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProcessResult"
-  /Wallet/GetServiceProvidersForBuyingEDaler:
+  /Agent/Wallet/GetServiceProvidersForBuyingEDaler:
     post:
       summary: Get Service Providers for Buying eDaler
       description: Allows the client to retrieve a list of available service providers that can be used to buy eDaler.
@@ -1556,7 +1554,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
-  /Wallet/GetServiceProvidersForSellingEDaler:
+  /Agent/Wallet/GetServiceProvidersForSellingEDaler:
     post:
       summary: Get Service Providers for Selling eDaler
       description: Allows the client to retrieve a list of available service providers that can be used to sell eDaler.
@@ -1583,7 +1581,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
-  /Wallet/GetPaymentOptionsForBuyingEDaler:
+  /Agent/Wallet/GetPaymentOptionsForBuyingEDaler:
     post:
       summary: Get Payment Options for Buying eDaler
       description: |
@@ -1612,7 +1610,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/GetPaymentOptionsForSellingEDaler:
+  /Agent/Wallet/GetPaymentOptionsForSellingEDaler:
     post:
       summary: Get Payment Options for Selling eDaler
       description: |
@@ -1642,7 +1640,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/InitiateBuyEDaler:
+  /Agent/Wallet/InitiateBuyEDaler:
     post:
       summary: Initiate Buy eDaler
       description: Allows the client to initiate the process of buying eDaler, using a service provider that does not use a smart contract as the basis for the transaction (i.e. a service provider that will require the client to open a third-party page to complete the transaction).
@@ -1669,7 +1667,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/InitiateSellEDaler:
+  /Agent/Wallet/InitiateSellEDaler:
     post:
       summary: Initiate Sell eDaler
       description: Allows the client to initiate the process of selling eDaler, using a service provider that does not use a smart contract as the basis for the transaction (i.e. a service provider that will require the client to open a third-party page to complete the transaction).
@@ -1696,7 +1694,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/GetTransactionInformation:
+  /Agent/Wallet/GetTransactionInformation:
     post:
       summary: Get Transaction Information
       description: |
@@ -1724,7 +1722,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Tokens/GetTokens:
+  /Agent/Tokens/GetTokens:
     post:
       summary: Get Tokens
       description: Gets a list of tokens on the Neuron® owned by the account.
@@ -1751,7 +1749,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokensResult"
-  /Tokens/GetContractTokens:
+  /Agent/Tokens/GetContractTokens:
     post:
       summary: Get Contract Tokens
       description: Gets a list of tokens on the Neuron® owned by the account, for a specific contract.
@@ -1778,7 +1776,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokensResult"
-  /Tokens/GetCreationAttributes:
+  /Agent/Tokens/GetCreationAttributes:
     post:
       summary: Get Creation Attributes
       description: Gets the creation attributes for a specific token.
@@ -1805,7 +1803,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/CreationAttributes"
-  /Tokens/GetToken:
+  /Agent/Tokens/GetToken:
     post:
       summary: Get Token
       description: Gets information about a specific token.
@@ -1832,7 +1830,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokenResult"
-  /Tokens/GetDescription:
+  /Agent/Tokens/GetDescription:
     post:
       summary: Get Description
       description: Creates a report relating to a state machine associated with a token.
@@ -1859,7 +1857,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ReportResult"
-  /Tokens/AddTextNote:
+  /Agent/Tokens/AddTextNote:
     post:
       summary: Add Text Note
       description: Adds a text note to a token.
@@ -1886,7 +1884,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/NoteResult"
-  /Tokens/AddXmlNote:
+  /Agent/Tokens/AddXmlNote:
     post:
       summary: Add XML Note
       description: Adds an XML note to a token.
@@ -1913,7 +1911,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/NoteResult"
-  /Tokens/GetTokenEvents:
+  /Agent/Tokens/GetTokenEvents:
     post:
       summary: Get Token Events
       description: Gets a list of events for a specific token.
@@ -1940,7 +1938,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/EventsResult"
-  /StateMachines/GetCurrentState:
+  /Agent/StateMachines/GetCurrentState:
     post:
       summary: Get Current State
       description: Gets the current state of a state machine, associated with a token.
@@ -1967,7 +1965,7 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StateResult"
-  /StateMachines/CreateReport:
+  /Agent/StateMachines/CreateReport:
     post:
       summary: Create Report
       description: Creates a report relating to a state machine associated with a token.
@@ -2206,15 +2204,18 @@ components:
         userName:
           type: string
           description: The user name of the account.
+          nullable: false
           xml:
             attribute: true
         nonce:
           type: string
           description: A unique random string, at least 32 characters long, with sufficient entropy to not be reused again.
+          nullable: false
           xml:
             attribute: true
         signature:
           type: string
+          nullable: false
           description: >
             The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
 
@@ -2222,6 +2223,7 @@ components:
             attribute: true
         seconds:
           type: integer
+          nullable: false
           description: The number of seconds until the request expires.
           minimum: 0
           maximum: 3600
