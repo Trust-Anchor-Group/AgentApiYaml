@@ -4322,8 +4322,6 @@ components:
             required:
               - __name
               - __ns
-              - name
-              - value
             properties:
               __name:
                 type: string
