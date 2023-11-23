@@ -1535,7 +1535,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IdentityResponse"
+                $ref: "#/components/schemas/IdentityResponseJSON"
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
@@ -1576,7 +1576,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IdentitiesResponse"
+                $ref: "#/components/schemas/IdentitiesResponseJSON"
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentitiesResponse"
@@ -4207,6 +4207,165 @@ components:
             wrapped: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+
+    IdentityResponseJSON:
+      type: object
+      required:
+        - Identity
+      properties:
+        Identity:
+          $ref: "#/components/schemas/IdentityJson"
+
+    IdentitiesResponseJSON:
+      type: object
+      required:
+        - Identities
+      properties:
+        Identities:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/IdentityJson"
+
+    IdentityJson:
+      type: object
+      required:
+        - __name
+        - __ns
+        - id
+        - xmlns
+        - clientPublicKey
+        - property
+        - clientSignature
+        - status
+        - serverSignature
+      properties:
+        __name:
+          type: string
+          description: The local name of the identity.
+        __ns:
+          type: string
+          description: The namespace of the identity.
+        id:
+          type: string
+          description: The ID of the identity.
+        xmlns:
+          type: string
+          description: The XML namespace of the identity.
+        clientPublicKey:
+          type: object
+          description: The public key object of the client.
+          required:
+            - __name
+            - __ns
+          additionalProperties: true
+          properties:
+            __name:
+              type: string
+              description: The local name of the public key.
+            __ns:
+              type: string
+              description: The namespace of the public key.
+        property:
+          type: array
+          nullable: true
+          items:
+            type: object
+            required:
+              - __name
+              - __ns
+              - name
+              - value
+            properties:
+              __name:
+                type: string
+                description: The local name of the property.
+              __ns:
+                type: string
+                description: The namespace of the property.
+              name:
+                type: string
+                description: The name of the property.
+              value:
+                type: string
+                description: The value of the property.
+              xmlns:
+                type: string
+                description: The XML namespace of the property.
+        clientSignature:
+          type: object
+          description: The signature object of the client.
+          required:
+            - __name
+            - __ns
+            - value
+          properties:
+            __name:
+              type: string
+              description: The local name of the signature.
+            __ns:
+              type: string
+              description: The namespace of the signature.
+            value:
+              type: string
+              description: The signature.
+        status:
+          type: object
+          description: The status object of the identity.
+          required:
+            - __name
+            - __ns
+            - created
+            - from
+            - provider
+            - state
+            - to
+            - updated
+          properties:
+            __name:
+              type: string
+              description: The local name of the status.
+            __ns:
+              type: string
+              description: The namespace of the status.
+            created:
+              type: string
+              format: date-time
+              description: When the status was created.
+            from:
+              type: string
+              format: date-time
+            provider:
+              type: string
+              description: The Bare JID of the provider.
+            state:
+              type: string
+              description: The state of the status.
+            to:
+              type: string
+              format: date-time
+            updated:
+              type: string
+              format: date-time
+              description: When the status was last updated.
+        serverSignature:
+          type: object
+          description: The signature object of the server.
+          required:
+            - __name
+            - __ns
+            - value
+          properties:
+            __name:
+              type: string
+              description: The local name of the signature.
+            __ns:
+              type: string
+              description: The namespace of the signature.
+            value:
+              type: string
+              description: The signature.
+
     AddIdAttachment:
       type: object
       required:
