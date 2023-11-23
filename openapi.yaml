@@ -41,10 +41,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DomainInfo"
+                $ref: "#/components/schemas/DomainInfoResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/DomainInfo"
+                $ref: "#/components/schemas/DomainInfoResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -59,7 +59,6 @@ paths:
           $ref: "#/components/responses/NotAcceptableResponse"
         "429":
           $ref: "#/components/responses/TooManyRequestsResponse"
-
   /Agent/Account/Create:
     post:
       summary: Create Account
@@ -155,7 +154,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateAccount"
+              $ref: "#/components/schemas/CreateAccountBody"
             example:
               userName: Required(Str(PUserName)),
               eMail: Required(Str(PEMail)),
@@ -166,17 +165,17 @@ paths:
               seconds: Required(Int(0 < PSeconds <= 3600))
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateAccount"
+              $ref: "#/components/schemas/CreateAccountBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountCreated"
+                $ref: "#/components/schemas/CreateAccountResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/AccountCreated"
+                $ref: "#/components/schemas/CreateAccountResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -202,20 +201,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetSessionToken"
+              $ref: "#/components/schemas/GetSessionTokenBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetSessionToken"
+              $ref: "#/components/schemas/GetSessionTokenBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SessionToken"
+                $ref: "#/components/schemas/GetSessionTokenResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/SessionToken"
+                $ref: "#/components/schemas/GetSessionTokenResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -241,20 +240,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/VerifyEMail"
+              $ref: "#/components/schemas/VerifyEMailBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/VerifyEMail"
+              $ref: "#/components/schemas/VerifyEMailBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EMailVerified"
+                $ref: "#/components/schemas/VerifyEMailResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/EMailVerified"
+                $ref: "#/components/schemas/VerifyEMailResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -280,20 +279,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Login"
+              $ref: "#/components/schemas/LoginBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Login"
+              $ref: "#/components/schemas/LoginBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -318,20 +317,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WwwLogin"
+              $ref: "#/components/schemas/WwwLoginBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/WwwLogin"
+              $ref: "#/components/schemas/WwwLoginBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -361,20 +360,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Refresh"
+              $ref: "#/components/schemas/RefreshBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Refresh"
+              $ref: "#/components/schemas/RefreshBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -401,10 +400,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Logout"
+              $ref: "#/components/schemas/LogoutBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Logout"
+              $ref: "#/components/schemas/LogoutBody"
       responses:
         "200":
           description: OK
@@ -439,10 +438,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Recover"
+              $ref: "#/components/schemas/RecoverBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Recover"
+              $ref: "#/components/schemas/RecoverBody"
       responses:
         "200":
           description: OK
@@ -481,10 +480,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendTextMessage"
+              $ref: "#/components/schemas/SendTextMessageBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendTextMessage"
+              $ref: "#/components/schemas/SendTextMessageBody"
       responses:
         "200":
           description: OK
@@ -607,10 +606,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendPresenceSubscription"
+              $ref: "#/components/schemas/SendPresenceSubscriptionBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendPresenceSubscription"
+              $ref: "#/components/schemas/SendPresenceSubscriptionBody"
       responses:
         "200":
           description: OK
@@ -649,10 +648,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendPresenceUnsubscription"
+              $ref: "#/components/schemas/SendPresenceUnsubscriptionBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendPresenceUnsubscription"
+              $ref: "#/components/schemas/SendPresenceUnsubscriptionBody"
       responses:
         "200":
           description: OK
@@ -691,20 +690,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionAccepted"
+              $ref: "#/components/schemas/SendSubscriptionAcceptedBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionAccepted"
+              $ref: "#/components/schemas/SendSubscriptionAcceptedBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscriptionAcceptedResult"
+                $ref: "#/components/schemas/SendSubscriptionAcceptedResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/SubscriptionAcceptedResult"
+                $ref: "#/components/schemas/SendSubscriptionAcceptedResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -733,10 +732,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionDeclined"
+              $ref: "#/components/schemas/SendSubscriptionDeclinedBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionDeclined"
+              $ref: "#/components/schemas/SendSubscriptionDeclinedBody"
       responses:
         "200":
           description: OK
@@ -774,20 +773,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetRoster"
+              $ref: "#/components/schemas/GetRosterBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetRoster"
+              $ref: "#/components/schemas/GetRosterBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Roster"
+                $ref: "#/components/schemas/GetRosterResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/Roster"
+                $ref: "#/components/schemas/GetRosterResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -816,10 +815,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetRosterItem"
+              $ref: "#/components/schemas/GetRosterItemBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetRosterItem"
+              $ref: "#/components/schemas/GetRosterItemBody"
       responses:
         "200":
           description: OK
@@ -858,10 +857,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SetRosterItem"
+              $ref: "#/components/schemas/SetRosterItemBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SetRosterItem"
+              $ref: "#/components/schemas/SetRosterItemBody"
       responses:
         "200":
           description: OK
@@ -900,10 +899,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RemoveRosterItem"
+              $ref: "#/components/schemas/RemoveRosterItemBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/RemoveRosterItem"
+              $ref: "#/components/schemas/RemoveRosterItemBody"
       responses:
         "200":
           description: OK
@@ -942,10 +941,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PresenceProbe"
+              $ref: "#/components/schemas/PresenceProbeBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PresenceProbe"
+              $ref: "#/components/schemas/PresenceProbeBody"
       responses:
         "200":
           description: OK
@@ -984,10 +983,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InformationQuery"
+              $ref: "#/components/schemas/InformationQueryBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/InformationQuery"
+              $ref: "#/components/schemas/InformationQueryBody"
       responses:
         "200":
           description: OK
@@ -1025,10 +1024,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PopMessages"
+              $ref: "#/components/schemas/PopMessagesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PopMessages"
+              $ref: "#/components/schemas/PopMessagesBody"
       responses:
         "200":
           description: OK
@@ -1067,10 +1066,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SavePrivateXml"
+              $ref: "#/components/schemas/SavePrivateXmlBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SavePrivateXml"
+              $ref: "#/components/schemas/SavePrivateXmlBody"
       responses:
         "200":
           description: OK
@@ -1109,10 +1108,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoadPrivateXml"
+              $ref: "#/components/schemas/LoadPrivateXmlBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/LoadPrivateXml"
+              $ref: "#/components/schemas/LoadPrivateXmlBody"
       responses:
         "200":
           description: OK
@@ -1322,10 +1321,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetAlgorithms"
+              $ref: "#/components/schemas/GetAlgorithmsBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetAlgorithms"
+              $ref: "#/components/schemas/GetAlgorithmsBody"
       responses:
         "200":
           description: OK
@@ -1362,10 +1361,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateKey"
+              $ref: "#/components/schemas/CreateKeyBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateKey"
+              $ref: "#/components/schemas/CreateKeyBody"
       responses:
         "200":
           description: OK
@@ -1401,20 +1400,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetPublicKey"
+              $ref: "#/components/schemas/GetPublicKeyBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetPublicKey"
+              $ref: "#/components/schemas/GetPublicKeyBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublicKey"
+                $ref: "#/components/schemas/GetPublicKeyResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/PublicKey"
+                $ref: "#/components/schemas/GetPublicKeyResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -1442,10 +1441,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ValidatePNr"
+              $ref: "#/components/schemas/ValidatePNrBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/ValidatePNr"
+              $ref: "#/components/schemas/ValidatePNrBody"
       responses:
         "200":
           description: OK
@@ -1483,20 +1482,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetApplicationAttributes"
+              $ref: "#/components/schemas/GetApplicationAttributesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetApplicationAttributes"
+              $ref: "#/components/schemas/GetApplicationAttributesBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApplicationAttributes"
+                $ref: "#/components/schemas/GetApplicationAttributesResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/ApplicationAttributes"
+                $ref: "#/components/schemas/GetApplicationAttributesResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -1524,11 +1523,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/GetIdentityBody"
 
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/GetIdentityBody"
       responses:
         "200":
           description: OK
@@ -1566,10 +1565,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetIdentities"
+              $ref: "#/components/schemas/GetIdentitiesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetIdentities"
+              $ref: "#/components/schemas/GetIdentitiesBody"
       responses:
         "200":
           description: OK
@@ -1600,17 +1599,17 @@ paths:
       description: Allows the client to add an attachment to a Legal Identity application.
       operationId: addIdAttachment
       tags:
-        - Unavailable
+        - Legal
       security:
         - BearerAuth: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/AddIdAttachmentBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/AddIdAttachmentBody"
       responses:
         "200":
           description: OK
@@ -1653,10 +1652,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ReadyForApproval"
+              $ref: "#/components/schemas/ReadyForApprovalBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/ReadyForApproval"
+              $ref: "#/components/schemas/ReadyForApprovalBody"
       responses:
         "200":
           description: OK
@@ -1694,10 +1693,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForIdReview"
+              $ref: "#/components/schemas/GetServiceProvidersForIdReviewBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForIdReview"
+              $ref: "#/components/schemas/GetServiceProvidersForIdReviewBody"
       responses:
         "200":
           description: OK
@@ -1735,10 +1734,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SelectReviewService"
+              $ref: "#/components/schemas/SelectReviewServiceBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SelectReviewService"
+              $ref: "#/components/schemas/SelectReviewServiceBody"
       responses:
         "200":
           description: OK
@@ -1776,10 +1775,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToId"
+              $ref: "#/components/schemas/AuthorizeAccessToIdBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToId"
+              $ref: "#/components/schemas/AuthorizeAccessToIdBody"
       responses:
         "200":
           description: OK
@@ -1817,10 +1816,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PetitionPeerReview"
+              $ref: "#/components/schemas/PetitionPeerReviewBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PetitionPeerReview"
+              $ref: "#/components/schemas/PetitionPeerReviewBody"
       responses:
         "200":
           description: OK
@@ -1858,10 +1857,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PetitionId"
+              $ref: "#/components/schemas/PetitionIdBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PetitionId"
+              $ref: "#/components/schemas/PetitionIdBody"
       responses:
         "200":
           description: OK
@@ -1899,10 +1898,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PetitionSignature"
+              $ref: "#/components/schemas/PetitionSignatureBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PetitionSignature"
+              $ref: "#/components/schemas/PetitionSignatureBody"
       responses:
         "200":
           description: OK
@@ -1940,10 +1939,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateContract"
+              $ref: "#/components/schemas/CreateContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateContract"
+              $ref: "#/components/schemas/CreateContractBody"
       responses:
         "200":
           description: OK
@@ -1981,10 +1980,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetContract"
+              $ref: "#/components/schemas/GetContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetContract"
+              $ref: "#/components/schemas/GetContractBody"
       responses:
         "200":
           description: OK
@@ -2022,10 +2021,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignContract"
+              $ref: "#/components/schemas/SignContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SignContract"
+              $ref: "#/components/schemas/SignContractBody"
       responses:
         "200":
           description: OK
@@ -2063,10 +2062,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignData"
+              $ref: "#/components/schemas/SignDataBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SignData"
+              $ref: "#/components/schemas/SignDataBody"
       responses:
         "200":
           description: OK
@@ -2104,10 +2103,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetCreatedContracts"
+              $ref: "#/components/schemas/GetCreatedContractsBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetCreatedContracts"
+              $ref: "#/components/schemas/GetCreatedContractsBody"
       responses:
         "200":
           description: OK
@@ -2146,10 +2145,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToContract"
+              $ref: "#/components/schemas/AuthorizeAccessToContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToContract"
+              $ref: "#/components/schemas/AuthorizeAccessToContractBody"
       responses:
         "200":
           description: OK
@@ -2187,20 +2186,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetBalance"
+              $ref: "#/components/schemas/GetBalanceBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetBalance"
+              $ref: "#/components/schemas/GetBalanceBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Balance"
+                $ref: "#/components/schemas/GetBalanceResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/Balance"
+                $ref: "#/components/schemas/GetBalanceResponse"
         "400":
           $ref: "#/components/responses/BadRequestResponse"
         "401":
@@ -2228,10 +2227,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ProcessEDalerUri"
+              $ref: "#/components/schemas/ProcessEDalerUriBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/ProcessEDalerUri"
+              $ref: "#/components/schemas/ProcessEDalerUriBody"
       responses:
         "200":
           description: OK
@@ -2269,10 +2268,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDalerBody"
       responses:
         "200":
           description: OK
@@ -2310,10 +2309,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForSellingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForSellingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForSellingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForSellingEDalerBody"
       responses:
         "200":
           description: OK
@@ -2353,10 +2352,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDalerBody"
       responses:
         "200":
           description: OK
@@ -2397,10 +2396,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDalerBody"
       responses:
         "200":
           description: OK
@@ -2438,10 +2437,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InitiateBuyEDaler"
+              $ref: "#/components/schemas/InitiateBuyEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/InitiateBuyEDaler"
+              $ref: "#/components/schemas/InitiateBuyEDalerBody"
       responses:
         "200":
           description: OK
@@ -2479,10 +2478,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InitiateSellEDaler"
+              $ref: "#/components/schemas/InitiateSellEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/InitiateSellEDaler"
+              $ref: "#/components/schemas/InitiateSellEDalerBody"
       responses:
         "200":
           description: OK
@@ -2521,10 +2520,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetTransactionInformation"
+              $ref: "#/components/schemas/GetTransactionInformationBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetTransactionInformation"
+              $ref: "#/components/schemas/GetTransactionInformationBody"
       responses:
         "200":
           description: OK
@@ -2562,10 +2561,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetTokens"
+              $ref: "#/components/schemas/GetTokensBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetTokens"
+              $ref: "#/components/schemas/GetTokensBody"
       responses:
         "200":
           description: OK
@@ -2603,10 +2602,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetContractTokens"
+              $ref: "#/components/schemas/GetContractTokensBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetContractTokens"
+              $ref: "#/components/schemas/GetContractTokensBody"
       responses:
         "200":
           description: OK
@@ -2644,10 +2643,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetCreationAttributes"
+              $ref: "#/components/schemas/GetCreationAttributesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetCreationAttributes"
+              $ref: "#/components/schemas/GetCreationAttributesBody"
       responses:
         "200":
           description: OK
@@ -2685,10 +2684,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetToken"
+              $ref: "#/components/schemas/GetTokenBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetToken"
+              $ref: "#/components/schemas/GetTokenBody"
       responses:
         "200":
           description: OK
@@ -2726,10 +2725,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetDescription"
+              $ref: "#/components/schemas/GetDescriptionBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetDescription"
+              $ref: "#/components/schemas/GetDescriptionBody"
       responses:
         "200":
           description: OK
@@ -2767,10 +2766,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddTextNote"
+              $ref: "#/components/schemas/AddTextNoteBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AddTextNote"
+              $ref: "#/components/schemas/AddTextNoteBody"
       responses:
         "200":
           description: OK
@@ -2808,10 +2807,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddXmlNote"
+              $ref: "#/components/schemas/AddXmlNoteBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AddXmlNote"
+              $ref: "#/components/schemas/AddXmlNoteBody"
       responses:
         "200":
           description: OK
@@ -2849,10 +2848,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetTokenEvents"
+              $ref: "#/components/schemas/GetTokenEventsBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetTokenEvents"
+              $ref: "#/components/schemas/GetTokenEventsBody"
       responses:
         "200":
           description: OK
@@ -2890,10 +2889,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetCurrentState"
+              $ref: "#/components/schemas/GetCurrentStateBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetCurrentState"
+              $ref: "#/components/schemas/GetCurrentStateBody"
       responses:
         "200":
           description: OK
@@ -2931,10 +2930,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateReport"
+              $ref: "#/components/schemas/CreateReportBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateReport"
+              $ref: "#/components/schemas/CreateReportBody"
       responses:
         "200":
           description: OK
@@ -2985,7 +2984,7 @@ components:
       type: string
       format: password
 
-    DomainInfo:
+    DomainInfoResponse:
       type: object
       required:
         - useEncryption
@@ -3011,8 +3010,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: DomainInfo
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    CreateAccount:
+    CreateAccountBody:
       type: object
       required:
         - userName
@@ -3065,8 +3065,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: CreateAccount
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AccountCreated:
+    CreateAccountResponse:
       type: object
       required:
         - created
@@ -3103,16 +3104,18 @@ components:
           xml:
             attribute: true
       xml:
+        name: AccountCreated
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetSessionToken:
+    GetSessionTokenBody:
       type: object
       xml:
+        name: GetSessionToken
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SessionToken:
+    GetSessionTokenResponse:
       type: object
       properties:
         AccountCreated:
-          $ref: "#/components/schemas/AccountCreated"
+          $ref: "#/components/schemas/CreateAccountResponse"
         seconds:
           type: integer
           description: The number of seconds until the JWT expires.
@@ -3121,8 +3124,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SessionToken
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    VerifyEMail:
+    VerifyEMailBody:
       type: object
       required:
         - eMail
@@ -3140,8 +3144,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: VerifyEMail
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    EMailVerified:
+    VerifyEMailResponse:
       type: object
       required:
         - eMail
@@ -3159,8 +3164,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: EMailVerified
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Login:
+    LoginBody:
       type: object
       required:
         - userName
@@ -3194,8 +3200,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: Login
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    LoggedIn:
+    LoginResponse:
       type: object
       required:
         - jwt
@@ -3212,8 +3219,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: LoggedIn
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    WwwLogin:
+    WwwLoginBody:
       type: object
       required:
         - seconds
@@ -3226,8 +3234,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: WwwLogin
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Refresh:
+    RefreshBody:
       type: object
       required:
         - seconds
@@ -3240,16 +3249,19 @@ components:
           xml:
             attribute: true
       xml:
+        name: Refresh
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Logout:
+    LogoutBody:
       type: object
       xml:
+        name: Logout
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     AckResponse:
       type: object
       xml:
+        name: AckResponse
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Recover:
+    RecoverBody:
       type: object
       properties:
         userName:
@@ -3278,8 +3290,9 @@ components:
     RecoverResponse:
       type: object
       xml:
+        name: RecoverResponse
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendTextMessage:
+    SendTextMessageBody:
       type: object
       required:
         - to
@@ -3311,6 +3324,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendTextMessage
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     SendFormattedMessage:
       type: object
@@ -3344,6 +3358,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendFormattedMessage
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     StanzaResult:
       type: object
@@ -3363,8 +3378,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: StanzaResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendPresenceSubscription:
+    SendPresenceSubscriptionBody:
       type: object
       required:
         - to
@@ -3391,6 +3407,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendPresenceSubscription
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     PresenceSubscriptionResult:
       type: object
@@ -3411,6 +3428,7 @@ components:
         RosterItem:
           $ref: "#/components/schemas/RosterItem"
       xml:
+        name: PresenceSubscriptionResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Groups:
       type: array
@@ -3489,7 +3507,7 @@ components:
             name: Xml
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendPresenceUnsubscription:
+    SendPresenceUnsubscriptionBody:
       type: object
       required:
         - to
@@ -3505,8 +3523,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendPresenceUnsubscription
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendSubscriptionAccepted:
+    SendSubscriptionAcceptedBody:
       type: object
       required:
         - to
@@ -3522,8 +3541,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendSubscriptionAccepted
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SubscriptionAcceptedResult:
+    SendSubscriptionAcceptedResponse:
       type: object
       required:
         - sent
@@ -3543,8 +3563,9 @@ components:
         RosterItem:
           $ref: "#/components/schemas/RosterItem"
       xml:
+        name: SubscriptionAcceptedResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendSubscriptionDeclined:
+    SendSubscriptionDeclinedBody:
       type: object
       required:
         - to
@@ -3561,7 +3582,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetRoster:
+    GetRosterBody:
       type: object
       properties:
         offset:
@@ -3575,8 +3596,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetRoster
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Roster:
+    GetRosterResponse:
       type: object
       properties:
         RosterItems:
@@ -3592,7 +3614,7 @@ components:
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
         name: Roster
-    GetRosterItem:
+    GetRosterItemBody:
       type: object
       required:
         - bareJid
@@ -3603,8 +3625,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetRosterItem
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SetRosterItem:
+    SetRosterItemBody:
       type: object
       required:
         - bareJid
@@ -3623,7 +3646,10 @@ components:
             attribute: true
         Groups:
           $ref: "#/components/schemas/Groups"
-    RemoveRosterItem:
+      xml:
+        name: SetRosterItem
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    RemoveRosterItemBody:
       type: object
       required:
         - bareJid
@@ -3634,8 +3660,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: RemoveRosterItem
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PresenceProbe:
+    PresenceProbeBody:
       type: object
       required:
         - to
@@ -3646,6 +3673,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: PresenceProbe
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ProbeResult:
       type: object
@@ -3678,7 +3706,7 @@ components:
             name: Stanza
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    InformationQuery:
+    InformationQueryBody:
       type: object
       required:
         - to
@@ -3703,6 +3731,7 @@ components:
             wrapped: false
             name: "[Custom Xml]"
       xml:
+        name: InformationQuery
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     QueryResultJson:
       type: object
@@ -3761,7 +3790,7 @@ components:
             name: "[Custom Xml]"
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PopMessages:
+    PopMessagesBody:
       type: object
       required:
         - maxCount
@@ -3772,6 +3801,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: PopMessages
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Message:
       type: object
@@ -3829,7 +3859,7 @@ components:
             $ref: "#/components/schemas/Message"
           xml:
             name: Message
-    SavePrivateXml:
+    SavePrivateXmlBody:
       type: object
       required:
         - xml
@@ -3841,6 +3871,7 @@ components:
           xml:
             name: "[Custom Xml]"
       xml:
+        name: SavePrivateXml
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Stored:
       type: object
@@ -3860,7 +3891,7 @@ components:
           description: When the information record was last updated.
           xml:
             attribute: true
-    LoadPrivateXml:
+    LoadPrivateXmlBody:
       type: object
       required:
         - localName
@@ -3877,6 +3908,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: LoadPrivateXml
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     PrivateXml:
       type: object
@@ -3990,9 +4022,10 @@ components:
       xml:
         name: Algorithms
         wrapped: true
-    GetAlgorithms:
+    GetAlgorithmsBody:
       type: object
       xml:
+        name: GetAlgorithms
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     AlgorithmsResult:
       type: object
@@ -4002,8 +4035,9 @@ components:
         algorithms:
           $ref: "#/components/schemas/Algorithms"
       xml:
+        name: AlgorithmsResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    CreateKey:
+    CreateKeyBody:
       type: object
       required:
         - localName
@@ -4045,7 +4079,10 @@ components:
             The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
           xml:
             attribute: true
-    GetPublicKey:
+      xml:
+        name: CreateKey
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetPublicKeyBody:
       type: object
       properties:
         keyId:
@@ -4053,7 +4090,10 @@ components:
           description: Optional Key ID. If not provided, the server public key is returned. If provided, the public key of the corresponding cryptographic key of the client is returned.
           xml:
             attribute: true
-    PublicKey:
+      xml:
+        name: GetPublicKey
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetPublicKeyResponse:
       type: object
       required:
         - key
@@ -4066,8 +4106,9 @@ components:
         Algorithm:
           $ref: "#/components/schemas/Algorithm"
       xml:
+        name: PublicKey
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ValidatePNr:
+    ValidatePNrBody:
       type: object
       required:
         - countryCode
@@ -4084,6 +4125,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: ValidatePNr
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ValidatePNrResponse:
       type: object
@@ -4107,11 +4149,12 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetApplicationAttributes:
+    GetApplicationAttributesBody:
       type: object
       xml:
+        name: GetApplicationAttributes
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ApplicationAttributes:
+    GetApplicationAttributesResponse:
       type: object
       required:
         - peerReview
@@ -4148,7 +4191,10 @@ components:
           xml:
             name: Required
             wrapped: true
-    GetIdentity:
+      xml:
+        name: ApplicationAttributes
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetIdentityBody:
       type: object
       required:
         - legalId
@@ -4159,6 +4205,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetIdentity
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     IdentityResponse:
       type: object
@@ -4173,7 +4220,7 @@ components:
             namespace: "urn:ieee:iot:leg:id:1.0"
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetIdentities:
+    GetIdentitiesBody:
       type: object
       properties:
         offset:
@@ -4187,6 +4234,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetIdentities
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     IdentitiesResponse:
       type: object
@@ -4366,7 +4414,7 @@ components:
               type: string
               description: The signature.
 
-    AddIdAttachment:
+    AddIdAttachmentBody:
       type: object
       required:
         - keyId
@@ -4421,8 +4469,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: AddIdAttachment
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ReadyForApproval:
+    ReadyForApprovalBody:
       type: object
       required:
         - legalId
@@ -4433,8 +4482,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: ReadyForApproval
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetServiceProvidersForIdReview:
+    GetServiceProvidersForIdReviewBody:
       type: object
       required:
         - legalId
@@ -4445,6 +4495,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetServiceProvidersForIdReview
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Provider:
       type: object
@@ -4516,7 +4567,7 @@ components:
             wrapped: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SelectReviewService:
+    SelectReviewServiceBody:
       type: object
       required:
         - serviceId
@@ -4533,8 +4584,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SelectReviewService
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AuthorizeAccessToId:
+    AuthorizeAccessToIdBody:
       type: object
       required:
         - legalId
@@ -4557,8 +4609,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: AuthorizeAccessToId
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PetitionPeerReview:
+    PetitionPeerReviewBody:
       type: object
       required:
         - keyId
@@ -4607,8 +4660,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: PetitionPeerReview
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PetitionId:
+    PetitionIdBody:
       type: object
       required:
         - keyId
@@ -4657,8 +4711,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: PetitionId
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PetitionSignature:
+    PetitionSignatureBody:
       type: object
       required:
         - keyId
@@ -4713,6 +4768,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: PetitionSignature
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Part:
       type: object
@@ -4766,7 +4822,7 @@ components:
       xml:
         name: Parameters
         wrapped: true
-    CreateContract:
+    CreateContractBody:
       type: object
       required:
         - templateId
@@ -4792,6 +4848,7 @@ components:
         Parameters:
           $ref: "#/components/schemas/Parameters"
       xml:
+        name: CreateContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ContractResponse:
       type: object
@@ -4806,7 +4863,7 @@ components:
             attribute: false
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetContract:
+    GetContractBody:
       type: object
       required:
         - contractId
@@ -4817,8 +4874,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SignContract:
+    SignContractBody:
       type: object
       required:
         - keyId
@@ -4867,8 +4925,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SignContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SignData:
+    SignDataBody:
       type: object
       required:
         - keyId
@@ -4905,6 +4964,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SignData
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     SignatureResponse:
       type: object
@@ -4918,7 +4978,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetCreatedContracts:
+    GetCreatedContractsBody:
       type: object
       properties:
         offset:
@@ -4932,6 +4992,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetCreatedContracts
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ContractsResponse:
       type: object
@@ -4950,7 +5011,7 @@ components:
             wrapped: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AuthorizeAccessToContract:
+    AuthorizeAccessToContractBody:
       type: object
       required:
         - contractId
@@ -4973,12 +5034,14 @@ components:
           xml:
             attribute: true
       xml:
+        name: AuthorizeAccessToContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetBalance:
+    GetBalanceBody:
       type: object
       xml:
+        name: GetBalance
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Balance:
+    GetBalanceResponse:
       type: object
       required:
         - amount
@@ -5008,8 +5071,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: Balance
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ProcessEDalerUri:
+    ProcessEDalerUriBody:
       type: object
       required:
         - uri
@@ -5020,6 +5084,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: ProcessEDalerUri
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ProcessResult:
       type: object
@@ -5027,7 +5092,7 @@ components:
         - Balance
       properties:
         Balance:
-          $ref: "#/components/schemas/Balance"
+          $ref: "#/components/schemas/GetBalanceResponse"
         Result:
           type: object
           description: The result of the process operation.
@@ -5036,16 +5101,18 @@ components:
             attribute: false
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetServiceProvidersForBuyingEDaler:
+    GetServiceProvidersForBuyingEDalerBody:
       type: object
       xml:
+        name: GetServiceProvidersForBuyingEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetServiceProvidersForSellingEDaler:
+    GetServiceProvidersForSellingEDalerBody:
       type: object
       xml:
+        name: GetServiceProvidersForSellingEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
 
-    PaymentOptionsSchema:
+    GetPaymentOptionsForBuyingEDalerBody:
       type: object
       required:
         - serviceId
@@ -5095,15 +5162,63 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetPaymentOptionsForBuyingEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
 
-    GetPaymentOptionsForBuyingEDaler:
-      $ref: "#/components/schemas/PaymentOptionsSchema"
+    GetPaymentOptionsForSellingEDalerBody:
+      type: object
+      required:
+        - serviceId
+        - serviceProvider
+      properties:
+        serviceId:
+          type: string
+          description: ID of internal eDaler service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+        successUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation is successful.
+          xml:
+            attribute: true
+        failureUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation fails.
+          xml:
+            attribute: true
+        cancelUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+        transactionId:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        tabId:
+          type: string
+          description: Tab ID.
+          xml:
+            attribute: true
+        functionName:
+          type: string
+          description: Function name.
+          xml:
+            attribute: true
+      xml:
+        name: GetPaymentOptionsForSellingEDaler
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
 
-    GetPaymentOptionsForSellingEDaler:
-      $ref: "#/components/schemas/PaymentOptionsSchema"
-
-    InitiateBuyEDaler:
+    InitiateBuyEDalerBody:
       type: object
       required:
         - serviceId
@@ -5157,10 +5272,10 @@ components:
           description: Tab ID.
           xml:
             attribute: true
-
       xml:
+        name: InitiateBuyEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    InitiateSellEDaler:
+    InitiateSellEDalerBody:
       type: object
       required:
         - serviceId
@@ -5214,8 +5329,8 @@ components:
           description: Tab ID.
           xml:
             attribute: true
-
       xml:
+        name: InitiateSellEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     TransactionInformation:
       type: object
@@ -5297,8 +5412,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: TransactionInformation
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetTransactionInformation:
+    GetTransactionInformationBody:
       type: object
       required:
         - transactionId
@@ -5319,8 +5435,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetTransactionInformation
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetTokens:
+    GetTokensBody:
       type: object
       properties:
         offset:
@@ -5339,6 +5456,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetTokens
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     TokensResult:
       type: object
@@ -5351,7 +5469,7 @@ components:
             name: Tokens
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetContractTokens:
+    GetContractTokensBody:
       type: object
       required:
         - contractId
@@ -5377,10 +5495,12 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetContractTokens
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetCreationAttributes:
+    GetCreationAttributesBody:
       type: object
       xml:
+        name: GetCreationAttributes
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     CreationAttributes:
       type: object
@@ -5407,7 +5527,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetToken:
+    GetTokenBody:
       type: object
       required:
         - tokenId
@@ -5418,6 +5538,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetToken
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     TokenResult:
       type: object
@@ -5430,7 +5551,7 @@ components:
             name: Token
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetDescription:
+    GetDescriptionBody:
       type: object
       required:
         - tokenId
@@ -5444,6 +5565,7 @@ components:
         reportFormat:
           $ref: "#/components/schemas/reportFormat"
       xml:
+        name: GetDescription
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ReportResult:
       type: object
@@ -5457,7 +5579,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AddTextNote:
+    AddTextNoteBody:
       type: object
       required:
         - tokenId
@@ -5480,6 +5602,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: AddTextNote
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     NoteResult:
       type: object
@@ -5494,7 +5617,7 @@ components:
             name: Note
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AddXmlNote:
+    AddXmlNoteBody:
       type: object
       required:
         - tokenId
@@ -5517,8 +5640,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: AddXmlNote
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetTokenEvents:
+    GetTokenEventsBody:
       type: object
       required:
         - tokenId
@@ -5539,6 +5663,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetTokenEvents
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     EventsResult:
       type: object
@@ -5550,7 +5675,7 @@ components:
             name: Events
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetCurrentState:
+    GetCurrentStateBody:
       type: object
       required:
         - tokenId
@@ -5561,8 +5686,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetCurrentState
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    CreateReport:
+    CreateReportBody:
       type: object
       required:
         - tokenId
@@ -5587,6 +5713,7 @@ components:
         reportFormat:
           $ref: "#/components/schemas/reportFormat"
       xml:
+        name: CreateReport
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     reportFormat:
       type: string
