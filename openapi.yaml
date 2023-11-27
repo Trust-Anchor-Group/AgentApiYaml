@@ -3098,8 +3098,8 @@ components:
           xml:
             attribute: true
         expires:
-          type: string
-          format: date-time
+          type: integer
+          format: timestamp
           description: The timestamp when the jwt token expires.
           xml:
             attribute: true
