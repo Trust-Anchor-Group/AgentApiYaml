@@ -5735,15 +5735,43 @@ components:
   responses:
     BadRequestResponse:
       description: Bad request, most probably due to the content sent in the request not conforming to the specification.
+      content:
+        text/plain:
+          schema:
+            type: string
     UnauthorizedResponse:
       description: Unauthorized access to a resource was prevented. Client must login first.
+      content:
+        text/plain:
+          schema:
+            type: string
     ForbiddenResponse:
       description: Forbidden access to resource was stopped. Client does not have sufficient privileges to access resource or perform requested action, or access is done using unencrypted, or a connection that is not sufficiently encrypted.
+      content:
+        text/plain:
+          schema:
+            type: string
     NotFoundResponse:
       description: Resource, or item referenced in request, was not found.
+      content:
+        text/plain:
+          schema:
+            type: string
     MethodNotAllowedResponse:
       description: Method not allowed. The method used in the request is not allowed for the resource.
+      content:
+        text/plain:
+          schema:
+            type: string
     NotAcceptableResponse:
       description: Content sent, or content requested in a format that is not supported by the resource.
+      content:
+        text/plain:
+          schema:
+            type: string
     TooManyRequestsResponse:
       description: Too many requests have been made, for this resource, or any of the referenced resources in the request.
+      content:
+        text/plain:
+          schema:
+            type: string
