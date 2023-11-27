@@ -9,16 +9,14 @@ info:
     The Full API is
   version: 1.0.0
 servers:
-  - url: https://{domain}/Agent
+  - url: https://{domain}
     description: Sample Server
     variables:
       domain:
         default: localhost
         description: This variable determines the domain of the API
-  - url: https://localhost/Agent
-    description: Local Server
 paths:
-  /Account/DomainInfo:
+  /Agent/Account/DomainInfo:
     get:
       summary: Get Domain Info
       description: |
@@ -43,11 +41,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DomainInfo"
+                $ref: "#/components/schemas/DomainInfoResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/DomainInfo"
-  /Account/Create:
+                $ref: "#/components/schemas/DomainInfoResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/Create:
     post:
       summary: Create Account
       description: |
@@ -76,7 +88,7 @@ paths:
         -------------------
 
         | Parameter    | Description |
-        |:-------------|:------------|
+        |-------------|------------|
         | `PUserName`  | User Name of the account to create. |
         | `PEMail`     | e-Mail address of the user. |
         | `PPassword`  | Password to use. |
@@ -89,7 +101,7 @@ paths:
         -----------------------
 
         | Parameter   | Description |
-        |:------------|:------------|
+        |------------|------------|
         | `PCreated`  | When account was created (server timestamp). |
         | `PEnabled`  | If account is enabled or not. When creating an account, it's disabled by default, until the e-mail address has been validated. |
         | `PCanRelay` | If account can be used to relay e-mails. |
@@ -142,44 +154,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateAccount"
-            example: 
-              userName: Required(Str(PUserName))
-              eMail: Required(Str(PEMail))
-              password: Required(Str(PPassword))
-              apiKey: Required(Str(PApiKey))
-              nonce: Required(Str(PNonce))
-              signature: Required(Str(PSignature))
+              $ref: "#/components/schemas/CreateAccountBody"
+            example:
+              userName: Required(Str(PUserName)),
+              eMail: Required(Str(PEMail)),
+              password: Required(Str(PPassword)),
+              apiKey: Required(Str(PApiKey)),
+              nonce: Required(Str(PNonce)),
+              signature: Required(Str(PSignature)),
               seconds: Required(Int(0 < PSeconds <= 3600))
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateAccount"
-            example: |
-              <CreateAccount xmlns="https://waher.se/Schema/BrokerAgent.xsd"
-                userName=(Required(Str(PUserName)))
-                eMail=(Required(Str(PEMail)))
-                password=(Required(Str(PPassword)))
-                apiKey=(Required(Str(PApiKey)))
-                nonce=(Required(Str(PNonce)))
-                signature=(Required(Str(PSignature)))
-                seconds=(Required(Int(0 < PSeconds <= 3600))) />
+              $ref: "#/components/schemas/CreateAccountBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountCreated"
-              example:
-                created: Required(DateTime(PCreated))
-                enabled: Required(Bool(PEnabled))
-                canRelay: Required(Bool(PCanRelay))
-                jwt: Required(Str(PJwt))
-                expires: Required(DateTime(PExpires))
+                $ref: "#/components/schemas/CreateAccountResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/AccountCreated"
-  /Account/GetSessionToken:
+                $ref: "#/components/schemas/CreateAccountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/GetSessionToken:
     post:
       summary: Get newly created account created using a web form
       description: Allows the client to get session information about a newly created account, created using a web form, without having to provide user credentials again.
@@ -190,21 +201,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetSessionToken"
+              $ref: "#/components/schemas/GetSessionTokenBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetSessionToken"
+              $ref: "#/components/schemas/GetSessionTokenBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SessionToken"
+                $ref: "#/components/schemas/GetSessionTokenResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/SessionToken"
-  /Account/VerifyEMail:
+                $ref: "#/components/schemas/GetSessionTokenResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/VerifyEMail:
     post:
       summary: Verify E-Mail
       operationId: verifyEMail
@@ -215,21 +240,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/VerifyEMail"
+              $ref: "#/components/schemas/VerifyEMailBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/VerifyEMail"
+              $ref: "#/components/schemas/VerifyEMailBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EMailVerified"
+                $ref: "#/components/schemas/VerifyEMailResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/EMailVerified"
-  /Account/Login:
+                $ref: "#/components/schemas/VerifyEMailResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/Login:
     post:
       summary: Login
       operationId: login
@@ -240,21 +279,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Login"
+              $ref: "#/components/schemas/LoginBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Login"
+              $ref: "#/components/schemas/LoginBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
-  /Account/WwwLogin:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/WwwLogin:
     post:
       summary: Login
       operationId: wwwLogin
@@ -264,23 +317,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WwwLogin"
+              $ref: "#/components/schemas/WwwLoginBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/WwwLogin"
+              $ref: "#/components/schemas/WwwLoginBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
       security:
         - WwwAuth: []
-  /Account/Refresh:
+  /Agent/Account/Refresh:
     post:
       summary: Refresh
       operationId: refresh
@@ -293,21 +360,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Refresh"
+              $ref: "#/components/schemas/RefreshBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Refresh"
+              $ref: "#/components/schemas/RefreshBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
+                $ref: "#/components/schemas/LoginResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/LoggedIn"
-  /Account/Logout:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/Logout:
     post:
       summary: Logout
       operationId: logout
@@ -319,10 +400,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Logout"
+              $ref: "#/components/schemas/LogoutBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Logout"
+              $ref: "#/components/schemas/LogoutBody"
       responses:
         "200":
           description: OK
@@ -333,7 +414,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Account/Recover:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Account/Recover:
     post:
       summary: Recover Account
       operationId: recover
@@ -343,10 +438,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Recover"
+              $ref: "#/components/schemas/RecoverBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/Recover"
+              $ref: "#/components/schemas/RecoverBody"
       responses:
         "200":
           description: OK
@@ -357,7 +452,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RecoverResponse"
-  /Xmpp/SendTextMessage:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendTextMessage:
     post:
       summary: Send Text Message
       description: Allows the client to send a plain text chat message from its account to an XMPP recipient.
@@ -371,10 +480,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendTextMessage"
+              $ref: "#/components/schemas/SendTextMessageBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendTextMessage"
+              $ref: "#/components/schemas/SendTextMessageBody"
       responses:
         "200":
           description: OK
@@ -385,7 +494,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendFormattedMessage:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendFormattedMessage:
     post:
       summary: Send Formatted Message
       description: Allows the client to send a formatted chat message from its account to an XMPP recipient. A formatted message contains the message in plain text, Markdown and HTML. The recipient, depending on capabilities, will select the representation it handles best to present the message.
@@ -413,7 +536,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendXmlMessage:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendXmlMessage:
     post:
       summary: Send XML Message
       description: Allows the client to send a custom XML normal message from its account to an XMPP recipient.
@@ -441,7 +578,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendPresenceSubscription:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendPresenceSubscription:
     post:
       summary: Send Presence Subscription
       description: Allows the client to send a presence subscription stanza from its account to an XMPP recipient.
@@ -455,10 +606,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendPresenceSubscription"
+              $ref: "#/components/schemas/SendPresenceSubscriptionBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendPresenceSubscription"
+              $ref: "#/components/schemas/SendPresenceSubscriptionBody"
       responses:
         "200":
           description: OK
@@ -469,7 +620,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PresenceSubscriptionResult"
-  /Xmpp/SendPresenceUnsubscription:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendPresenceUnsubscription:
     post:
       summary: Send Presence Unsubscription
       description: Allows the client to send a presence unsubscription stanza from its account to an XMPP recipient.
@@ -483,10 +648,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendPresenceUnsubscription"
+              $ref: "#/components/schemas/SendPresenceUnsubscriptionBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendPresenceUnsubscription"
+              $ref: "#/components/schemas/SendPresenceUnsubscriptionBody"
       responses:
         "200":
           description: OK
@@ -497,7 +662,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/SendSubscriptionAccepted:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendSubscriptionAccepted:
     post:
       summary: Send Subscription Accepted
       description: Allows the client to accept a presence subscription made to its account.
@@ -511,21 +690,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionAccepted"
+              $ref: "#/components/schemas/SendSubscriptionAcceptedBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionAccepted"
+              $ref: "#/components/schemas/SendSubscriptionAcceptedBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscriptionAcceptedResult"
+                $ref: "#/components/schemas/SendSubscriptionAcceptedResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/SubscriptionAcceptedResult"
-  /Xmpp/SendSubscriptionDeclined:
+                $ref: "#/components/schemas/SendSubscriptionAcceptedResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SendSubscriptionDeclined:
     post:
       summary: Send Subscription Declined
       description: Allows the client to decline a presence subscription made to its account.
@@ -539,10 +732,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionDeclined"
+              $ref: "#/components/schemas/SendSubscriptionDeclinedBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SendSubscriptionDeclined"
+              $ref: "#/components/schemas/SendSubscriptionDeclinedBody"
       responses:
         "200":
           description: OK
@@ -553,7 +746,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StanzaResult"
-  /Xmpp/GetRoster:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/GetRoster:
     post:
       summary: Get Roster
       description: Allows the client to get the roster of its account.
@@ -566,21 +773,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetRoster"
+              $ref: "#/components/schemas/GetRosterBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetRoster"
+              $ref: "#/components/schemas/GetRosterBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Roster"
+                $ref: "#/components/schemas/GetRosterResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/Roster"
-  /Xmpp/GetRosterItem:
+                $ref: "#/components/schemas/GetRosterResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/GetRosterItem:
     post:
       summary: Get Roster Item
       description: Allows the client to get a specific roster item of its account.
@@ -594,10 +815,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetRosterItem"
+              $ref: "#/components/schemas/GetRosterItemBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetRosterItem"
+              $ref: "#/components/schemas/GetRosterItemBody"
       responses:
         "200":
           description: OK
@@ -608,7 +829,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
-  /Xmpp/SetRosterItem:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/SetRosterItem:
     post:
       summary: Set Roster Item
       description: Sets information about a specific roster item for the account.
@@ -622,10 +857,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SetRosterItem"
+              $ref: "#/components/schemas/SetRosterItemBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SetRosterItem"
+              $ref: "#/components/schemas/SetRosterItemBody"
       responses:
         "200":
           description: OK
@@ -636,7 +871,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
-  /Xmpp/RemoveRosterItem:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/RemoveRosterItem:
     post:
       summary: Remove Roster Item
       description: Removes a specific roster item from the account.
@@ -650,10 +899,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RemoveRosterItem"
+              $ref: "#/components/schemas/RemoveRosterItemBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/RemoveRosterItem"
+              $ref: "#/components/schemas/RemoveRosterItemBody"
       responses:
         "200":
           description: OK
@@ -664,7 +913,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/RosterItem"
-  /Xmpp/PresenceProbe:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/PresenceProbe:
     post:
       summary: Presence Probe
       description: Gets the latest presence issued by a contact in your roster who has approved your presence subscription request.
@@ -678,10 +941,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PresenceProbe"
+              $ref: "#/components/schemas/PresenceProbeBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PresenceProbe"
+              $ref: "#/components/schemas/PresenceProbeBody"
       responses:
         "200":
           description: OK
@@ -692,7 +955,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProbeResult"
-  /Xmpp/InformationQuery:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/InformationQuery:
     post:
       summary: Information Query
       description: Sends an Information Query (iq) to an entity on the XMPP network, given its Full JID. For connected entities, you need to have an presence subscription to that entity, approved by the entity, to get the Full JID. You get the Full JID using the Presence Probe resource.
@@ -706,10 +983,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InformationQuery"
+              $ref: "#/components/schemas/InformationQueryBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/InformationQuery"
+              $ref: "#/components/schemas/InformationQueryBody"
       responses:
         "200":
           description: OK
@@ -720,7 +997,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/QueryResultXml"
-  /Xmpp/PopMessages:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Xmpp/PopMessages:
     post:
       summary: Pop Messages
       operationId: popMessages
@@ -733,10 +1024,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PopMessages"
+              $ref: "#/components/schemas/PopMessagesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PopMessages"
+              $ref: "#/components/schemas/PopMessagesBody"
       responses:
         "200":
           description: OK
@@ -747,7 +1038,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/MessageResult"
-  /Storage/SavePrivateXml:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Storage/SavePrivateXml:
     post:
       summary: Save Private XML
       description: Saves private XML data to the server.
@@ -761,10 +1066,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SavePrivateXml"
+              $ref: "#/components/schemas/SavePrivateXmlBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SavePrivateXml"
+              $ref: "#/components/schemas/SavePrivateXmlBody"
       responses:
         "200":
           description: OK
@@ -775,7 +1080,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Stored"
-  /Storage/LoadPrivateXml:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Storage/LoadPrivateXml:
     post:
       summary: Load Private XML
       description: Loads private XML data from the server.
@@ -789,10 +1108,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoadPrivateXml"
+              $ref: "#/components/schemas/LoadPrivateXmlBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/LoadPrivateXml"
+              $ref: "#/components/schemas/LoadPrivateXmlBody"
       responses:
         "200":
           description: OK
@@ -803,7 +1122,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/PrivateXml"
-  /Storage/Content:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Storage/Content:
     post:
       summary: Upload new content using form data
       operationId: postContent
@@ -833,7 +1166,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
-  /Storage/Content/{username}/{contentId}:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Storage/Content/{username}/{contentId}:
     put:
       summary: Upload new content with Content ID
       operationId: putContent
@@ -879,7 +1226,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
-  /Storage/Content/{path}:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Storage/Content/{path}:
     delete:
       summary: Deletes content from path
       operationId: deleteContent
@@ -897,6 +1258,20 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
     get:
       summary: Get content from path
       operationId: getContent
@@ -921,7 +1296,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContentResponse"
-  /Crypto/GetAlgorithms:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Crypto/GetAlgorithms:
     post:
       summary: Get Algorithms
       description: Gets a list of algorithms supported by the server.
@@ -932,10 +1321,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetAlgorithms"
+              $ref: "#/components/schemas/GetAlgorithmsBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetAlgorithms"
+              $ref: "#/components/schemas/GetAlgorithmsBody"
       responses:
         "200":
           description: OK
@@ -946,7 +1335,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AlgorithmsResult"
-  /Crypto/CreateKey:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Crypto/CreateKey:
     post:
       summary: Create Key
       description: >
@@ -958,10 +1361,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateKey"
+              $ref: "#/components/schemas/CreateKeyBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateKey"
+              $ref: "#/components/schemas/CreateKeyBody"
       responses:
         "200":
           description: OK
@@ -972,7 +1375,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/Stored"
-  /Crypto/GetPublicKey:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Crypto/GetPublicKey:
     post:
       summary: Get Public Key
       description: Gets the public key of a key pair.
@@ -983,21 +1400,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetPublicKey"
+              $ref: "#/components/schemas/GetPublicKeyBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetPublicKey"
+              $ref: "#/components/schemas/GetPublicKeyBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublicKey"
+                $ref: "#/components/schemas/GetPublicKeyResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/PublicKey"
-  /Legal/ValidatePNr:
+                $ref: "#/components/schemas/GetPublicKeyResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/ValidatePNr:
     post:
       summary: Validate Personal Number
       description: Allows the client to validate a personal number before using it to apply for a Legal Identity.
@@ -1010,10 +1441,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ValidatePNr"
+              $ref: "#/components/schemas/ValidatePNrBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/ValidatePNr"
+              $ref: "#/components/schemas/ValidatePNrBody"
       responses:
         "200":
           description: OK
@@ -1024,7 +1455,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ValidatePNrResponse"
-  /Legal/GetApplicationAttributes:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/GetApplicationAttributes:
     post:
       summary: Get Application Attributes
       description: Allows the client to get the attributes of a legal identity application.
@@ -1037,64 +1482,134 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetApplicationAttributes"
+              $ref: "#/components/schemas/GetApplicationAttributesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetApplicationAttributes"
+              $ref: "#/components/schemas/GetApplicationAttributesBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApplicationAttributes"
+                $ref: "#/components/schemas/GetApplicationAttributesResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/ApplicationAttributes"
-  /Legal/GetIdentity:
+                $ref: "#/components/schemas/GetApplicationAttributesResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/GetIdentity:
     post:
-      summary: Get Legal Identity (NOT IMPLEMENTED)
+      summary: Get Legal Identity
       description: Allows the client to get an Identity. If the Identity belongs to someone else, and the client is not authorized access to the Identity, an error will be returned.
       operationId: getIdentity
       tags:
-        - Unavailable
+        - Legal
       security:
         - BearerAuth: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/GetIdentityBody"
+
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/GetIdentityBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IdentityResponse"
+                $ref: "#/components/schemas/IdentityResponseJSON"
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
-  /Legal/AddIdAttachment:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/GetIdentities:
+    post:
+      summary: Get Legal Identities
+      description: Allows the client to get a list of identities. If the identities belong to someone else, and the client is not authorized access to the identities, an error will be returned.
+      operationId: getIdentities
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetIdentitiesBody"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/GetIdentitiesBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentitiesResponseJSON"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/IdentitiesResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/AddIdAttachment:
     post:
       summary: Add attachment to legal id application (NOT IMPLEMENTED)
       description: Allows the client to add an attachment to a Legal Identity application.
       operationId: addIdAttachment
       tags:
-        - Unavailable
+        - Legal
       security:
         - BearerAuth: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/AddIdAttachmentBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetIdentity"
+              $ref: "#/components/schemas/AddIdAttachmentBody"
       responses:
         "200":
           description: OK
@@ -1105,7 +1620,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/IdentityResponse"
-  /Legal/ReadyForApproval:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/ReadyForApproval:
     post:
       summary: Ready for Approval
       description: |
@@ -1123,10 +1652,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ReadyForApproval"
+              $ref: "#/components/schemas/ReadyForApprovalBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/ReadyForApproval"
+              $ref: "#/components/schemas/ReadyForApprovalBody"
       responses:
         "200":
           description: OK
@@ -1137,7 +1666,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/GetServiceProviderForIdReview:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/GetServiceProviderForIdReview:
     post:
       summary: Get Service Provider for ID Review
       description: Allows the client to retrieve a list of available service providers that can be used to review a recent ID application.
@@ -1150,10 +1693,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForIdReview"
+              $ref: "#/components/schemas/GetServiceProvidersForIdReviewBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForIdReview"
+              $ref: "#/components/schemas/GetServiceProvidersForIdReviewBody"
       responses:
         "200":
           description: OK
@@ -1164,7 +1707,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
-  /Legal/SelectReviewService:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/SelectReviewService:
     post:
       summary: Select Review Service
       description: Allows the client to select an internal peer review service, for reviewing a recent identity application.
@@ -1177,10 +1734,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SelectReviewService"
+              $ref: "#/components/schemas/SelectReviewServiceBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SelectReviewService"
+              $ref: "#/components/schemas/SelectReviewServiceBody"
       responses:
         "200":
           description: OK
@@ -1191,7 +1748,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/AuthorizeAccessToId:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/AuthorizeAccessToId:
     post:
       summary: Authorize Access to ID
       description: Allows the client to (pre-)authorize access to (or remove authorization to access) one of its Legal Identities to a remote party. When (if) the remote party requests the ID, the broker will return it automatically, if already authorized. If not authorized, a petition to access the identity will be sent to the client for manual approval (or rejection).
@@ -1204,10 +1775,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToId"
+              $ref: "#/components/schemas/AuthorizeAccessToIdBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToId"
+              $ref: "#/components/schemas/AuthorizeAccessToIdBody"
       responses:
         "200":
           description: OK
@@ -1218,7 +1789,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/PetitionPeerReview:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/PetitionPeerReview:
     post:
       summary: Petition Peer Review
       description: Allows the client to petition a peer review service to review a recent identity application.
@@ -1231,10 +1816,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PetitionPeerReview"
+              $ref: "#/components/schemas/PetitionPeerReviewBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PetitionPeerReview"
+              $ref: "#/components/schemas/PetitionPeerReviewBody"
       responses:
         "200":
           description: OK
@@ -1245,7 +1830,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/PetitionId:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/PetitionId:
     post:
       summary: Petition ID
       description: Allows the client to petition the owner of a Legal Identity, for information about the identity.
@@ -1258,10 +1857,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PetitionId"
+              $ref: "#/components/schemas/PetitionIdBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PetitionId"
+              $ref: "#/components/schemas/PetitionIdBody"
       responses:
         "200":
           description: OK
@@ -1272,7 +1871,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/PetitionSignature:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/PetitionSignature:
     post:
       summary: Petition Signature
       description: Allows the client to petition the owner of a Legal Identity for a digital signature on some digital content.
@@ -1285,10 +1898,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PetitionSignature"
+              $ref: "#/components/schemas/PetitionSignatureBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/PetitionSignature"
+              $ref: "#/components/schemas/PetitionSignatureBody"
       responses:
         "200":
           description: OK
@@ -1299,7 +1912,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Legal/CreateContract:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/CreateContract:
     post:
       summary: Create Contract
       description: Allows the client to create a new smart contract, based on an existing (and approved) contract template. The request must be signed using one of the keys created by the client.
@@ -1312,10 +1939,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateContract"
+              $ref: "#/components/schemas/CreateContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateContract"
+              $ref: "#/components/schemas/CreateContractBody"
       responses:
         "200":
           description: OK
@@ -1326,7 +1953,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
-  /Legal/GetContract:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/GetContract:
     post:
       summary: Get Contract
       description: Allows the client to get a Smart Contract. If the Contract belongs to someone else, and the client is not authorized access to the Contract, an error will be returned.
@@ -1339,10 +1980,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetContract"
+              $ref: "#/components/schemas/GetContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetContract"
+              $ref: "#/components/schemas/GetContractBody"
       responses:
         "200":
           description: OK
@@ -1353,7 +1994,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
-  /Legal/SignContract:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/SignContract:
     post:
       summary: Sign Contract
       description: Allows the client to sign a Smart Contract. The request must be signed using one of the keys created by the client.
@@ -1366,10 +2021,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignContract"
+              $ref: "#/components/schemas/SignContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SignContract"
+              $ref: "#/components/schemas/SignContractBody"
       responses:
         "200":
           description: OK
@@ -1380,7 +2035,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractResponse"
-  /Legal/SignData:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/SignData:
     post:
       summary: Sign Data
       description: Allows the client to sign binary data.
@@ -1393,10 +2062,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignData"
+              $ref: "#/components/schemas/SignDataBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/SignData"
+              $ref: "#/components/schemas/SignDataBody"
       responses:
         "200":
           description: OK
@@ -1407,7 +2076,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/SignatureResponse"
-  /Legal/GetCreatedContracts:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/GetCreatedContracts:
     post:
       summary: Get Created Contracts
       description: Allows the client to get a list of all Smart Contracts created by the client.
@@ -1420,10 +2103,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetCreatedContracts"
+              $ref: "#/components/schemas/GetCreatedContractsBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetCreatedContracts"
+              $ref: "#/components/schemas/GetCreatedContractsBody"
       responses:
         "200":
           description: OK
@@ -1434,12 +2117,26 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ContractsResponse"
-  /Legal/AuthorizeAccessToContract:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/AuthorizeAccessToContract:
     post:
-      summary: Authorize Access to ID
+      summary: Authorize Access to Contract
       description: |
         Allows the client to (pre-)authorize access to (or remove authorization to access) one of its Smart Contracts (or one of the Smart Contracts for which the client is part) to a remote party. When (if) the remote party requests access to the the Smart Contract, the broker will return it automatically, if already authorized. If not authorized, a petition to access the Smart Contract will be sent to the clients of the part of the contract for manual approval.
-      operationId: authorizeAccessToId
+      operationId: authorizeAccessToContract
       tags:
         - Legal
       security:
@@ -1448,10 +2145,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToContract"
+              $ref: "#/components/schemas/AuthorizeAccessToContractBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AuthorizeAccessToContract"
+              $ref: "#/components/schemas/AuthorizeAccessToContractBody"
       responses:
         "200":
           description: OK
@@ -1462,7 +2159,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/AckResponse"
-  /Wallet/GetBalance:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/GetBalance:
     post:
       summary: Get Balance
       description: Allows the client to retrieve information about the current state of its wallet.
@@ -1475,21 +2186,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetBalance"
+              $ref: "#/components/schemas/GetBalanceBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetBalance"
+              $ref: "#/components/schemas/GetBalanceBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Balance"
+                $ref: "#/components/schemas/GetBalanceResponse"
             application/xml:
               schema:
-                $ref: "#/components/schemas/Balance"
-  /Wallet/ProcessEDalerUri:
+                $ref: "#/components/schemas/GetBalanceResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/ProcessEDalerUri:
     post:
       summary: Process eDaler URI
       description: Allows the client to process an eDaler URI.
@@ -1502,10 +2227,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ProcessEDalerUri"
+              $ref: "#/components/schemas/ProcessEDalerUriBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/ProcessEDalerUri"
+              $ref: "#/components/schemas/ProcessEDalerUriBody"
       responses:
         "200":
           description: OK
@@ -1516,7 +2241,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProcessResult"
-  /Wallet/GetServiceProvidersForBuyingEDaler:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/GetServiceProvidersForBuyingEDaler:
     post:
       summary: Get Service Providers for Buying eDaler
       description: Allows the client to retrieve a list of available service providers that can be used to buy eDaler.
@@ -1529,10 +2268,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForBuyingEDalerBody"
       responses:
         "200":
           description: OK
@@ -1543,7 +2282,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
-  /Wallet/GetServiceProvidersForSellingEDaler:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/GetServiceProvidersForSellingEDaler:
     post:
       summary: Get Service Providers for Selling eDaler
       description: Allows the client to retrieve a list of available service providers that can be used to sell eDaler.
@@ -1556,10 +2309,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForSellingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForSellingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetServiceProvidersForSellingEDaler"
+              $ref: "#/components/schemas/GetServiceProvidersForSellingEDalerBody"
       responses:
         "200":
           description: OK
@@ -1570,7 +2323,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ProvidersResponse"
-  /Wallet/GetPaymentOptionsForBuyingEDaler:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/GetPaymentOptionsForBuyingEDaler:
     post:
       summary: Get Payment Options for Buying eDaler
       description: |
@@ -1585,10 +2352,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForBuyingEDalerBody"
       responses:
         "200":
           description: OK
@@ -1599,7 +2366,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/GetPaymentOptionsForSellingEDaler:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/GetPaymentOptionsForSellingEDaler:
     post:
       summary: Get Payment Options for Selling eDaler
       description: |
@@ -1615,10 +2396,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDaler"
+              $ref: "#/components/schemas/GetPaymentOptionsForSellingEDalerBody"
       responses:
         "200":
           description: OK
@@ -1629,7 +2410,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/InitiateBuyEDaler:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/InitiateBuyEDaler:
     post:
       summary: Initiate Buy eDaler
       description: Allows the client to initiate the process of buying eDaler, using a service provider that does not use a smart contract as the basis for the transaction (i.e. a service provider that will require the client to open a third-party page to complete the transaction).
@@ -1642,10 +2437,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InitiateBuyEDaler"
+              $ref: "#/components/schemas/InitiateBuyEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/InitiateBuyEDaler"
+              $ref: "#/components/schemas/InitiateBuyEDalerBody"
       responses:
         "200":
           description: OK
@@ -1656,7 +2451,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/InitiateSellEDaler:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/InitiateSellEDaler:
     post:
       summary: Initiate Sell eDaler
       description: Allows the client to initiate the process of selling eDaler, using a service provider that does not use a smart contract as the basis for the transaction (i.e. a service provider that will require the client to open a third-party page to complete the transaction).
@@ -1669,10 +2478,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InitiateSellEDaler"
+              $ref: "#/components/schemas/InitiateSellEDalerBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/InitiateSellEDaler"
+              $ref: "#/components/schemas/InitiateSellEDalerBody"
       responses:
         "200":
           description: OK
@@ -1683,7 +2492,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Wallet/GetTransactionInformation:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Wallet/GetTransactionInformation:
     post:
       summary: Get Transaction Information
       description: |
@@ -1697,10 +2520,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetTransactionInformation"
+              $ref: "#/components/schemas/GetTransactionInformationBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetTransactionInformation"
+              $ref: "#/components/schemas/GetTransactionInformationBody"
       responses:
         "200":
           description: OK
@@ -1711,7 +2534,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TransactionInformation"
-  /Tokens/GetTokens:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/GetTokens:
     post:
       summary: Get Tokens
       description: Gets a list of tokens on the Neuron® owned by the account.
@@ -1724,10 +2561,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetTokens"
+              $ref: "#/components/schemas/GetTokensBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetTokens"
+              $ref: "#/components/schemas/GetTokensBody"
       responses:
         "200":
           description: OK
@@ -1738,7 +2575,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokensResult"
-  /Tokens/GetContractTokens:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/GetContractTokens:
     post:
       summary: Get Contract Tokens
       description: Gets a list of tokens on the Neuron® owned by the account, for a specific contract.
@@ -1751,10 +2602,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetContractTokens"
+              $ref: "#/components/schemas/GetContractTokensBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetContractTokens"
+              $ref: "#/components/schemas/GetContractTokensBody"
       responses:
         "200":
           description: OK
@@ -1765,7 +2616,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokensResult"
-  /Tokens/GetCreationAttributes:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/GetCreationAttributes:
     post:
       summary: Get Creation Attributes
       description: Gets the creation attributes for a specific token.
@@ -1778,10 +2643,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetCreationAttributes"
+              $ref: "#/components/schemas/GetCreationAttributesBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetCreationAttributes"
+              $ref: "#/components/schemas/GetCreationAttributesBody"
       responses:
         "200":
           description: OK
@@ -1792,7 +2657,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/CreationAttributes"
-  /Tokens/GetToken:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/GetToken:
     post:
       summary: Get Token
       description: Gets information about a specific token.
@@ -1805,10 +2684,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetToken"
+              $ref: "#/components/schemas/GetTokenBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetToken"
+              $ref: "#/components/schemas/GetTokenBody"
       responses:
         "200":
           description: OK
@@ -1819,7 +2698,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/TokenResult"
-  /Tokens/GetDescription:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/GetDescription:
     post:
       summary: Get Description
       description: Creates a report relating to a state machine associated with a token.
@@ -1832,10 +2725,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetDescription"
+              $ref: "#/components/schemas/GetDescriptionBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetDescription"
+              $ref: "#/components/schemas/GetDescriptionBody"
       responses:
         "200":
           description: OK
@@ -1846,7 +2739,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ReportResult"
-  /Tokens/AddTextNote:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/AddTextNote:
     post:
       summary: Add Text Note
       description: Adds a text note to a token.
@@ -1859,10 +2766,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddTextNote"
+              $ref: "#/components/schemas/AddTextNoteBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AddTextNote"
+              $ref: "#/components/schemas/AddTextNoteBody"
       responses:
         "200":
           description: OK
@@ -1873,7 +2780,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/NoteResult"
-  /Tokens/AddXmlNote:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/AddXmlNote:
     post:
       summary: Add XML Note
       description: Adds an XML note to a token.
@@ -1886,10 +2807,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddXmlNote"
+              $ref: "#/components/schemas/AddXmlNoteBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/AddXmlNote"
+              $ref: "#/components/schemas/AddXmlNoteBody"
       responses:
         "200":
           description: OK
@@ -1900,7 +2821,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/NoteResult"
-  /Tokens/GetTokenEvents:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Tokens/GetTokenEvents:
     post:
       summary: Get Token Events
       description: Gets a list of events for a specific token.
@@ -1913,10 +2848,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetTokenEvents"
+              $ref: "#/components/schemas/GetTokenEventsBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetTokenEvents"
+              $ref: "#/components/schemas/GetTokenEventsBody"
       responses:
         "200":
           description: OK
@@ -1927,7 +2862,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/EventsResult"
-  /StateMachines/GetCurrentState:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/StateMachines/GetCurrentState:
     post:
       summary: Get Current State
       description: Gets the current state of a state machine, associated with a token.
@@ -1940,10 +2889,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GetCurrentState"
+              $ref: "#/components/schemas/GetCurrentStateBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/GetCurrentState"
+              $ref: "#/components/schemas/GetCurrentStateBody"
       responses:
         "200":
           description: OK
@@ -1954,7 +2903,21 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/StateResult"
-  /StateMachines/CreateReport:
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/StateMachines/CreateReport:
     post:
       summary: Create Report
       description: Creates a report relating to a state machine associated with a token.
@@ -1967,10 +2930,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateReport"
+              $ref: "#/components/schemas/CreateReportBody"
           application/xml:
             schema:
-              $ref: "#/components/schemas/CreateReport"
+              $ref: "#/components/schemas/CreateReportBody"
       responses:
         "200":
           description: OK
@@ -1981,6 +2944,20 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ReportResult"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
 components:
   securitySchemes:
     WwwAuth:
@@ -2006,8 +2983,8 @@ components:
     password:
       type: string
       format: password
-    
-    DomainInfo:
+
+    DomainInfoResponse:
       type: object
       required:
         - useEncryption
@@ -2033,8 +3010,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: DomainInfo
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    CreateAccount:
+    CreateAccountBody:
       type: object
       required:
         - userName
@@ -2087,8 +3065,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: CreateAccount
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AccountCreated:
+    CreateAccountResponse:
       type: object
       required:
         - created
@@ -2125,16 +3104,18 @@ components:
           xml:
             attribute: true
       xml:
+        name: AccountCreated
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetSessionToken:
+    GetSessionTokenBody:
       type: object
       xml:
+        name: GetSessionToken
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SessionToken:
+    GetSessionTokenResponse:
       type: object
       properties:
         AccountCreated:
-          $ref: "#/components/schemas/AccountCreated"
+          $ref: "#/components/schemas/CreateAccountResponse"
         seconds:
           type: integer
           description: The number of seconds until the JWT expires.
@@ -2143,8 +3124,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SessionToken
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    VerifyEMail:
+    VerifyEMailBody:
       type: object
       required:
         - eMail
@@ -2162,8 +3144,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: VerifyEMail
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    EMailVerified:
+    VerifyEMailResponse:
       type: object
       required:
         - eMail
@@ -2181,8 +3164,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: EMailVerified
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Login:
+    LoginBody:
       type: object
       required:
         - userName
@@ -2193,6 +3177,7 @@ components:
         userName:
           type: string
           description: The user name of the account.
+          nullable: false
           xml:
             attribute: true
         nonce:
@@ -2215,8 +3200,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: Login
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    LoggedIn:
+    LoginResponse:
       type: object
       required:
         - jwt
@@ -2228,14 +3214,14 @@ components:
           xml:
             attribute: true
         expires:
-          type: string
-          format: date-time
+          type: integer
           description: The timestamp when the jwt token expires.
           xml:
             attribute: true
       xml:
+        name: LoggedIn
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    WwwLogin:
+    WwwLoginBody:
       type: object
       required:
         - seconds
@@ -2248,8 +3234,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: WwwLogin
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Refresh:
+    RefreshBody:
       type: object
       required:
         - seconds
@@ -2262,16 +3249,19 @@ components:
           xml:
             attribute: true
       xml:
+        name: Refresh
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Logout:
+    LogoutBody:
       type: object
       xml:
+        name: Logout
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     AckResponse:
       type: object
       xml:
+        name: AckResponse
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Recover:
+    RecoverBody:
       type: object
       properties:
         userName:
@@ -2300,8 +3290,9 @@ components:
     RecoverResponse:
       type: object
       xml:
+        name: RecoverResponse
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendTextMessage:
+    SendTextMessageBody:
       type: object
       required:
         - to
@@ -2333,6 +3324,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendTextMessage
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     SendFormattedMessage:
       type: object
@@ -2366,6 +3358,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendFormattedMessage
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     StanzaResult:
       type: object
@@ -2385,8 +3378,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: StanzaResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendPresenceSubscription:
+    SendPresenceSubscriptionBody:
       type: object
       required:
         - to
@@ -2413,6 +3407,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendPresenceSubscription
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     PresenceSubscriptionResult:
       type: object
@@ -2433,6 +3428,7 @@ components:
         RosterItem:
           $ref: "#/components/schemas/RosterItem"
       xml:
+        name: PresenceSubscriptionResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Groups:
       type: array
@@ -2511,7 +3507,7 @@ components:
             name: Xml
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendPresenceUnsubscription:
+    SendPresenceUnsubscriptionBody:
       type: object
       required:
         - to
@@ -2527,8 +3523,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendPresenceUnsubscription
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendSubscriptionAccepted:
+    SendSubscriptionAcceptedBody:
       type: object
       required:
         - to
@@ -2544,8 +3541,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SendSubscriptionAccepted
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SubscriptionAcceptedResult:
+    SendSubscriptionAcceptedResponse:
       type: object
       required:
         - sent
@@ -2565,8 +3563,9 @@ components:
         RosterItem:
           $ref: "#/components/schemas/RosterItem"
       xml:
+        name: SubscriptionAcceptedResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SendSubscriptionDeclined:
+    SendSubscriptionDeclinedBody:
       type: object
       required:
         - to
@@ -2583,7 +3582,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetRoster:
+    GetRosterBody:
       type: object
       properties:
         offset:
@@ -2597,8 +3596,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetRoster
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Roster:
+    GetRosterResponse:
       type: object
       properties:
         RosterItems:
@@ -2614,7 +3614,7 @@ components:
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
         name: Roster
-    GetRosterItem:
+    GetRosterItemBody:
       type: object
       required:
         - bareJid
@@ -2625,8 +3625,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetRosterItem
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SetRosterItem:
+    SetRosterItemBody:
       type: object
       required:
         - bareJid
@@ -2645,7 +3646,10 @@ components:
             attribute: true
         Groups:
           $ref: "#/components/schemas/Groups"
-    RemoveRosterItem:
+      xml:
+        name: SetRosterItem
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    RemoveRosterItemBody:
       type: object
       required:
         - bareJid
@@ -2656,8 +3660,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: RemoveRosterItem
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PresenceProbe:
+    PresenceProbeBody:
       type: object
       required:
         - to
@@ -2668,6 +3673,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: PresenceProbe
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ProbeResult:
       type: object
@@ -2700,7 +3706,7 @@ components:
             name: Stanza
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    InformationQuery:
+    InformationQueryBody:
       type: object
       required:
         - to
@@ -2725,6 +3731,7 @@ components:
             wrapped: false
             name: "[Custom Xml]"
       xml:
+        name: InformationQuery
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     QueryResultJson:
       type: object
@@ -2783,7 +3790,7 @@ components:
             name: "[Custom Xml]"
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PopMessages:
+    PopMessagesBody:
       type: object
       required:
         - maxCount
@@ -2794,6 +3801,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: PopMessages
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Message:
       type: object
@@ -2851,7 +3859,7 @@ components:
             $ref: "#/components/schemas/Message"
           xml:
             name: Message
-    SavePrivateXml:
+    SavePrivateXmlBody:
       type: object
       required:
         - xml
@@ -2863,6 +3871,7 @@ components:
           xml:
             name: "[Custom Xml]"
       xml:
+        name: SavePrivateXml
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Stored:
       type: object
@@ -2882,7 +3891,7 @@ components:
           description: When the information record was last updated.
           xml:
             attribute: true
-    LoadPrivateXml:
+    LoadPrivateXmlBody:
       type: object
       required:
         - localName
@@ -2899,6 +3908,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: LoadPrivateXml
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     PrivateXml:
       type: object
@@ -3012,9 +4022,10 @@ components:
       xml:
         name: Algorithms
         wrapped: true
-    GetAlgorithms:
+    GetAlgorithmsBody:
       type: object
       xml:
+        name: GetAlgorithms
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     AlgorithmsResult:
       type: object
@@ -3024,8 +4035,9 @@ components:
         algorithms:
           $ref: "#/components/schemas/Algorithms"
       xml:
+        name: AlgorithmsResult
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    CreateKey:
+    CreateKeyBody:
       type: object
       required:
         - localName
@@ -3067,7 +4079,10 @@ components:
             The HMAC-SHA256 signature of the request. See the endpoint description for how to calculate the signature.
           xml:
             attribute: true
-    GetPublicKey:
+      xml:
+        name: CreateKey
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetPublicKeyBody:
       type: object
       properties:
         keyId:
@@ -3075,7 +4090,10 @@ components:
           description: Optional Key ID. If not provided, the server public key is returned. If provided, the public key of the corresponding cryptographic key of the client is returned.
           xml:
             attribute: true
-    PublicKey:
+      xml:
+        name: GetPublicKey
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetPublicKeyResponse:
       type: object
       required:
         - key
@@ -3088,8 +4106,9 @@ components:
         Algorithm:
           $ref: "#/components/schemas/Algorithm"
       xml:
+        name: PublicKey
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ValidatePNr:
+    ValidatePNrBody:
       type: object
       required:
         - countryCode
@@ -3106,6 +4125,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: ValidatePNr
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ValidatePNrResponse:
       type: object
@@ -3129,11 +4149,12 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetApplicationAttributes:
+    GetApplicationAttributesBody:
       type: object
       xml:
+        name: GetApplicationAttributes
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ApplicationAttributes:
+    GetApplicationAttributesResponse:
       type: object
       required:
         - peerReview
@@ -3170,7 +4191,10 @@ components:
           xml:
             name: Required
             wrapped: true
-    GetIdentity:
+      xml:
+        name: ApplicationAttributes
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    GetIdentityBody:
       type: object
       required:
         - legalId
@@ -3181,6 +4205,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetIdentity
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     IdentityResponse:
       type: object
@@ -3189,13 +4214,200 @@ components:
       properties:
         Identity:
           type: object
-          example: "NOT IMPLEMENTED YET"
+          additionalProperties: true
           xml:
             name: Identity
-            wrapped: false
+            namespace: "urn:ieee:iot:leg:id:1.0"
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AddIdAttachment:
+    GetIdentitiesBody:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: Offset into the identities where response begins.
+          xml:
+            attribute: true
+        maxCount:
+          type: integer
+          description: Maximum number of identities to return.
+          xml:
+            attribute: true
+      xml:
+        name: GetIdentities
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+    IdentitiesResponse:
+      type: object
+      required:
+        - Identity
+      properties:
+        Identities:
+          type: array
+          nullable: true
+          items:
+            type: object
+            additionalProperties: true
+            xml:
+              name: Identity
+              namespace: "urn:ieee:iot:leg:id:1.0"
+          xml:
+            name: Identities
+            wrapped: true
+      xml:
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+
+    IdentityResponseJSON:
+      type: object
+      required:
+        - Identity
+      properties:
+        Identity:
+          $ref: "#/components/schemas/IdentityJson"
+
+    IdentitiesResponseJSON:
+      type: object
+      required:
+        - Identities
+      properties:
+        Identities:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/IdentityJson"
+
+    IdentityJson:
+      type: object
+      required:
+        - __name
+        - __ns
+        - id
+        - xmlns
+        - clientPublicKey
+        - property
+        - clientSignature
+        - status
+        - serverSignature
+      properties:
+        __name:
+          type: string
+          description: The local name of the identity.
+        __ns:
+          type: string
+          description: The namespace of the identity.
+        id:
+          type: string
+          description: The ID of the identity.
+        xmlns:
+          type: string
+          description: The XML namespace of the identity.
+        clientPublicKey:
+          type: object
+          description: The public key object of the client.
+          required:
+            - __name
+            - __ns
+          additionalProperties: true
+          properties:
+            __name:
+              type: string
+              description: The local name of the public key.
+            __ns:
+              type: string
+              description: The namespace of the public key.
+        property:
+          type: array
+          nullable: true
+          items:
+            type: object
+            required:
+              - __name
+              - __ns
+            properties:
+              __name:
+                type: string
+                description: The local name of the property.
+              __ns:
+                type: string
+                description: The namespace of the property.
+              xmlns:
+                type: string
+                description: The XML namespace of the property.
+            additionalProperties: true
+        clientSignature:
+          type: object
+          description: The signature object of the client.
+          required:
+            - __name
+            - __ns
+            - value
+          properties:
+            __name:
+              type: string
+              description: The local name of the signature.
+            __ns:
+              type: string
+              description: The namespace of the signature.
+            value:
+              type: string
+              description: The signature.
+        status:
+          type: object
+          description: The status object of the identity.
+          required:
+            - __name
+            - __ns
+            - created
+            - from
+            - provider
+            - state
+            - to
+            - updated
+          properties:
+            __name:
+              type: string
+              description: The local name of the status.
+            __ns:
+              type: string
+              description: The namespace of the status.
+            created:
+              type: string
+              format: date-time
+              description: When the status was created.
+            from:
+              type: string
+              format: date-time
+            provider:
+              type: string
+              description: The Bare JID of the provider.
+            state:
+              type: string
+              description: The state of the status.
+            to:
+              type: string
+              format: date-time
+            updated:
+              type: string
+              format: date-time
+              description: When the status was last updated.
+        serverSignature:
+          type: object
+          description: The signature object of the server.
+          required:
+            - __name
+            - __ns
+            - value
+          properties:
+            __name:
+              type: string
+              description: The local name of the signature.
+            __ns:
+              type: string
+              description: The namespace of the signature.
+            value:
+              type: string
+              description: The signature.
+
+    AddIdAttachmentBody:
       type: object
       required:
         - keyId
@@ -3250,8 +4462,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: AddIdAttachment
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ReadyForApproval:
+    ReadyForApprovalBody:
       type: object
       required:
         - legalId
@@ -3262,8 +4475,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: ReadyForApproval
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetServiceProvidersForIdReview:
+    GetServiceProvidersForIdReviewBody:
       type: object
       required:
         - legalId
@@ -3274,6 +4488,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetServiceProvidersForIdReview
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Provider:
       type: object
@@ -3345,7 +4560,7 @@ components:
             wrapped: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SelectReviewService:
+    SelectReviewServiceBody:
       type: object
       required:
         - serviceId
@@ -3362,8 +4577,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SelectReviewService
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AuthorizeAccessToId:
+    AuthorizeAccessToIdBody:
       type: object
       required:
         - legalId
@@ -3386,8 +4602,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: AuthorizeAccessToId
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PetitionPeerReview:
+    PetitionPeerReviewBody:
       type: object
       required:
         - keyId
@@ -3436,8 +4653,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: PetitionPeerReview
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PetitionId:
+    PetitionIdBody:
       type: object
       required:
         - keyId
@@ -3486,8 +4704,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: PetitionId
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    PetitionSignature:
+    PetitionSignatureBody:
       type: object
       required:
         - keyId
@@ -3542,6 +4761,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: PetitionSignature
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     Part:
       type: object
@@ -3595,7 +4815,7 @@ components:
       xml:
         name: Parameters
         wrapped: true
-    CreateContract:
+    CreateContractBody:
       type: object
       required:
         - templateId
@@ -3621,6 +4841,7 @@ components:
         Parameters:
           $ref: "#/components/schemas/Parameters"
       xml:
+        name: CreateContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ContractResponse:
       type: object
@@ -3635,7 +4856,7 @@ components:
             attribute: false
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetContract:
+    GetContractBody:
       type: object
       required:
         - contractId
@@ -3646,8 +4867,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SignContract:
+    SignContractBody:
       type: object
       required:
         - keyId
@@ -3696,8 +4918,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: SignContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    SignData:
+    SignDataBody:
       type: object
       required:
         - keyId
@@ -3734,6 +4957,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: SignData
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     SignatureResponse:
       type: object
@@ -3747,7 +4971,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetCreatedContracts:
+    GetCreatedContractsBody:
       type: object
       properties:
         offset:
@@ -3761,6 +4985,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetCreatedContracts
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ContractsResponse:
       type: object
@@ -3779,7 +5004,7 @@ components:
             wrapped: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AuthorizeAccessToContract:
+    AuthorizeAccessToContractBody:
       type: object
       required:
         - contractId
@@ -3802,12 +5027,14 @@ components:
           xml:
             attribute: true
       xml:
+        name: AuthorizeAccessToContract
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetBalance:
+    GetBalanceBody:
       type: object
       xml:
+        name: GetBalance
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    Balance:
+    GetBalanceResponse:
       type: object
       required:
         - amount
@@ -3837,8 +5064,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: Balance
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    ProcessEDalerUri:
+    ProcessEDalerUriBody:
       type: object
       required:
         - uri
@@ -3849,6 +5077,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: ProcessEDalerUri
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ProcessResult:
       type: object
@@ -3856,7 +5085,7 @@ components:
         - Balance
       properties:
         Balance:
-          $ref: "#/components/schemas/Balance"
+          $ref: "#/components/schemas/GetBalanceResponse"
         Result:
           type: object
           description: The result of the process operation.
@@ -3865,16 +5094,18 @@ components:
             attribute: false
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetServiceProvidersForBuyingEDaler:
+    GetServiceProvidersForBuyingEDalerBody:
       type: object
       xml:
+        name: GetServiceProvidersForBuyingEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetServiceProvidersForSellingEDaler:
+    GetServiceProvidersForSellingEDalerBody:
       type: object
       xml:
+        name: GetServiceProvidersForSellingEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    
-    PaymentOptionsSchema:
+
+    GetPaymentOptionsForBuyingEDalerBody:
       type: object
       required:
         - serviceId
@@ -3924,15 +5155,63 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetPaymentOptionsForBuyingEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
 
-    GetPaymentOptionsForBuyingEDaler:
-      $ref: '#/components/schemas/PaymentOptionsSchema'
+    GetPaymentOptionsForSellingEDalerBody:
+      type: object
+      required:
+        - serviceId
+        - serviceProvider
+      properties:
+        serviceId:
+          type: string
+          description: ID of internal eDaler service.
+          xml:
+            attribute: true
+        serviceProvider:
+          type: string
+          description: Type (class name) of service provider.
+          xml:
+            attribute: true
+        successUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation is successful.
+          xml:
+            attribute: true
+        failureUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation fails.
+          xml:
+            attribute: true
+        cancelUrl:
+          type: string
+          format: uri
+          description: URL to redirect to if the operation is cancelled.
+          xml:
+            attribute: true
+        transactionId:
+          type: string
+          description: Transaction ID.
+          xml:
+            attribute: true
+        tabId:
+          type: string
+          description: Tab ID.
+          xml:
+            attribute: true
+        functionName:
+          type: string
+          description: Function name.
+          xml:
+            attribute: true
+      xml:
+        name: GetPaymentOptionsForSellingEDaler
+        namespace: "https://waher.se/Schema/BrokerAgent.xsd"
 
-    GetPaymentOptionsForSellingEDaler:
-      $ref: '#/components/schemas/PaymentOptionsSchema'
-    
-    InitiateBuyEDaler:
+    InitiateBuyEDalerBody:
       type: object
       required:
         - serviceId
@@ -3986,10 +5265,10 @@ components:
           description: Tab ID.
           xml:
             attribute: true
-
       xml:
+        name: InitiateBuyEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    InitiateSellEDaler:
+    InitiateSellEDalerBody:
       type: object
       required:
         - serviceId
@@ -4043,8 +5322,8 @@ components:
           description: Tab ID.
           xml:
             attribute: true
-
       xml:
+        name: InitiateSellEDaler
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     TransactionInformation:
       type: object
@@ -4126,8 +5405,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: TransactionInformation
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetTransactionInformation:
+    GetTransactionInformationBody:
       type: object
       required:
         - transactionId
@@ -4148,8 +5428,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetTransactionInformation
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetTokens:
+    GetTokensBody:
       type: object
       properties:
         offset:
@@ -4168,6 +5449,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetTokens
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     TokensResult:
       type: object
@@ -4180,7 +5462,7 @@ components:
             name: Tokens
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetContractTokens:
+    GetContractTokensBody:
       type: object
       required:
         - contractId
@@ -4206,10 +5488,12 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetContractTokens
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetCreationAttributes:
+    GetCreationAttributesBody:
       type: object
       xml:
+        name: GetCreationAttributes
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     CreationAttributes:
       type: object
@@ -4236,7 +5520,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetToken:
+    GetTokenBody:
       type: object
       required:
         - tokenId
@@ -4247,6 +5531,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetToken
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     TokenResult:
       type: object
@@ -4259,7 +5544,7 @@ components:
             name: Token
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetDescription:
+    GetDescriptionBody:
       type: object
       required:
         - tokenId
@@ -4273,6 +5558,7 @@ components:
         reportFormat:
           $ref: "#/components/schemas/reportFormat"
       xml:
+        name: GetDescription
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     ReportResult:
       type: object
@@ -4286,7 +5572,7 @@ components:
             attribute: true
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AddTextNote:
+    AddTextNoteBody:
       type: object
       required:
         - tokenId
@@ -4309,6 +5595,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: AddTextNote
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     NoteResult:
       type: object
@@ -4323,7 +5610,7 @@ components:
             name: Note
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    AddXmlNote:
+    AddXmlNoteBody:
       type: object
       required:
         - tokenId
@@ -4346,8 +5633,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: AddXmlNote
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetTokenEvents:
+    GetTokenEventsBody:
       type: object
       required:
         - tokenId
@@ -4368,6 +5656,7 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetTokenEvents
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     EventsResult:
       type: object
@@ -4379,7 +5668,7 @@ components:
             name: Events
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    GetCurrentState:
+    GetCurrentStateBody:
       type: object
       required:
         - tokenId
@@ -4390,8 +5679,9 @@ components:
           xml:
             attribute: true
       xml:
+        name: GetCurrentState
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
-    CreateReport:
+    CreateReportBody:
       type: object
       required:
         - tokenId
@@ -4416,6 +5706,7 @@ components:
         reportFormat:
           $ref: "#/components/schemas/reportFormat"
       xml:
+        name: CreateReport
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
     reportFormat:
       type: string
@@ -4441,3 +5732,46 @@ components:
             name: CurrentState
       xml:
         namespace: "https://waher.se/Schema/BrokerAgent.xsd"
+  responses:
+    BadRequestResponse:
+      description: Bad request, most probably due to the content sent in the request not conforming to the specification.
+      content:
+        text/plain:
+          schema:
+            type: string
+    UnauthorizedResponse:
+      description: Unauthorized access to a resource was prevented. Client must login first.
+      content:
+        text/plain:
+          schema:
+            type: string
+    ForbiddenResponse:
+      description: Forbidden access to resource was stopped. Client does not have sufficient privileges to access resource or perform requested action, or access is done using unencrypted, or a connection that is not sufficiently encrypted.
+      content:
+        text/plain:
+          schema:
+            type: string
+    NotFoundResponse:
+      description: Resource, or item referenced in request, was not found.
+      content:
+        text/plain:
+          schema:
+            type: string
+    MethodNotAllowedResponse:
+      description: Method not allowed. The method used in the request is not allowed for the resource.
+      content:
+        text/plain:
+          schema:
+            type: string
+    NotAcceptableResponse:
+      description: Content sent, or content requested in a format that is not supported by the resource.
+      content:
+        text/plain:
+          schema:
+            type: string
+    TooManyRequestsResponse:
+      description: Too many requests have been made, for this resource, or any of the referenced resources in the request.
+      content:
+        text/plain:
+          schema:
+            type: string
