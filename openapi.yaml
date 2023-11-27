@@ -3077,9 +3077,9 @@ components:
         - expires
       properties:
         created:
-          type: string
-          format: date-time
-          description: The timestamp when the account was created.
+          type: integer
+          format: timestamp
+          description: The server timestamp when the account was created.
           xml:
             attribute: true
         enabled:
