@@ -2975,8 +2975,8 @@ components:
       type: string
       format: uuid
     timestamp:
-      type: string
-      format: date-time
+      type: integer
+      format: timestamp
     eMail:
       type: string
       format: email
@@ -3694,8 +3694,8 @@ components:
           xml:
             attribute: true
         recieved:
-          type: string
-          format: date-time
+          type: integer
+          format: timestamp
           description: When presence was received by the server of the contact.
           xml:
             attribute: true
@@ -3833,8 +3833,8 @@ components:
           xml:
             attribute: true
         timestamp:
-          type: string
-          format: date-time
+          type: integer
+          format: timestamp
           description: The timestamp of the message.
           xml:
             attribute: true
@@ -3880,14 +3880,14 @@ components:
         - updated
       properties:
         created:
-          type: string
-          format: date-time
+          type: integer
+          format: timestamp
           description: When the information record was first created.
           xml:
             attribute: true
         updated:
-          type: string
-          format: date-time
+          type: integer
+          format: timestamp
           description: When the information record was last updated.
           xml:
             attribute: true
@@ -5058,8 +5058,8 @@ components:
           xml:
             attribute: true
         timestamp:
-          type: string
-          format: date-time
+          type: integer
+          format: timestamp
           description: Timestamp of balance statement.
           xml:
             attribute: true
