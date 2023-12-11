@@ -235,6 +235,8 @@ paths:
       operationId: verifyEMail
       tags:
         - Account
+      security:
+        - BearerAuth: []
       requestBody:
         required: true
         content:
