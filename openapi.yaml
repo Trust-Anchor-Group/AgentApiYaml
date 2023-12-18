@@ -1430,6 +1430,47 @@ paths:
           $ref: "#/components/responses/NotAcceptableResponse"
         "429":
           $ref: "#/components/responses/TooManyRequestsResponse"
+  /Agent/Legal/ApplyId:
+    post:
+      summary: Apply for a legal identity
+      description: Allows the client to apply for a new Legal Identity on the server. The application must be signed using one of the keys created by the client.
+      operationId: applyId
+      tags:
+        - Legal
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplyIdBody"
+          text/xml:
+            schema:
+              $ref: "#/components/schemas/ApplyIdBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentityResponseJSON"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/IdentityResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowedResponse"
+        "406":
+          $ref: "#/components/responses/NotAcceptableResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequestsResponse"
   /Agent/Legal/ValidatePNr:
     post:
       summary: Validate Personal Number
@@ -4409,6 +4450,54 @@ components:
               type: string
               description: The signature.
 
+    ApplyIdBody:
+      type:  object
+      required:
+        - "keyId"
+        - "nonce"
+        - "keySignature"
+        - "requestSignature"
+        - "Properties"
+      properties:
+        keyId:
+          type: string
+          description: Identity of key to use for signing the Identity application.
+          xml:
+            attribute: true
+        nonce:
+          type: string
+          description: A unique random string, at least 32 characters long, with sufficient entropy to not be reused again. If reused, an error will be returned.
+          xml:
+            attribute: true
+        keySignature:
+          type: string
+          description: >
+            Cryptographic signature of the key ID, using the key password.
+          xml:
+            attribute: true
+        requestSignature:
+          type: string
+          description: >
+            Cryptographic signature of the request, using the account password.
+          xml:
+            attribute: true
+        Properties:
+          type: array
+          xml: 
+            wrapped: true
+          nullable: true
+          items:
+            type: object
+            required:
+              - name
+              - value
+            properties:
+              name:
+                type: string
+                description: The name of the property.
+              value:
+                type: string
+                description: The value of the property.
     AddIdAttachmentBody:
       type: object
       required:
