@@ -4019,7 +4019,7 @@ components:
       required:
         - localName
         - namespace
-        - secuirtyStrength
+        - securityStrength
         - safe
         - slow
         - score
@@ -4034,7 +4034,7 @@ components:
           description: The namespace of the algorithm.
           xml:
             attribute: true
-        secuirtyStrength:
+        securityStrength:
           type: integer
           description: The security strength of the algorithm.
           xml:
