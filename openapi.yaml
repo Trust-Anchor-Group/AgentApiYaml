@@ -4399,12 +4399,7 @@ components:
           required:
             - __name
             - __ns
-            - created
-            - from
-            - provider
             - state
-            - to
-            - updated
           properties:
             __name:
               type: string
@@ -4451,7 +4446,7 @@ components:
               description: The signature.
 
     ApplyIdBody:
-      type:  object
+      type: object
       required:
         - "keyId"
         - "nonce"
@@ -4483,7 +4478,7 @@ components:
             attribute: true
         Properties:
           type: array
-          xml: 
+          xml:
             wrapped: true
           nullable: true
           items:
