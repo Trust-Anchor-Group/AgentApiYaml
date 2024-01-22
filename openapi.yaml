@@ -3888,12 +3888,11 @@ components:
           xml:
             attribute: true
         content:
-          type: string
+          type: object
           description: The content of the message.
-          example: ""
+          additionalProperties: true
           xml:
             wrapped: false
-            name: "[Custom Xml]"
       xml:
         wrapped: false
     MessageResult:
