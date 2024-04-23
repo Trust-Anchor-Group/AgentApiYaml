@@ -33,10 +33,13 @@ See [Generating SDKs](#generating-sdks)
 | `/Account/GetSessionToken`                   | ✅             |❌              |
 | `/Account/VerifyEMail`                       | ✅             |❌              |
 | `/Account/Login`                             | ✅             |❌              |
+| `/Account/QuickLogin`                        | ❌             |❌              |
 | `/Account/WwwLogin`                          | ✅             |❌              |
 | `/Account/Refresh`                           | ✅             |❌              |
 | `/Account/Logout`                            | ✅             |❌              |
 | `/Account/Recover`                           | ✅             |❌              |
+| `/Account/Info`                              | ❌             |❌              |
+| `/Account/AuthenticateJwt`                   | ❌             |❌              |
 | `/Xmpp/SendTextMessage`                      | ✅             |❌              |
 | `/Xmpp/SendFormattedMessage`                 | ✅             |❌              |
 | `/Xmpp/SendXmlMessage`                       | ✅             |❌              |
